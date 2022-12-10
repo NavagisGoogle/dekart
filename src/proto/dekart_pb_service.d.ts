@@ -103,6 +103,24 @@ type DekartGetEnv = {
   readonly responseType: typeof proto_dekart_pb.GetEnvResponse;
 };
 
+type DekartCreateTileSession = {
+  readonly methodName: string;
+  readonly service: typeof Dekart;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof proto_dekart_pb.CreateTileSessionRequest;
+  readonly responseType: typeof proto_dekart_pb.CreateTileSessionResponse;
+};
+
+type DekartGetTile = {
+  readonly methodName: string;
+  readonly service: typeof Dekart;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof proto_dekart_pb.GetTileRequest;
+  readonly responseType: typeof proto_dekart_pb.GetTileResponse;
+};
+
 type DekartGetReportStream = {
   readonly methodName: string;
   readonly service: typeof Dekart;
@@ -134,6 +152,8 @@ export class Dekart {
   static readonly RunQuery: DekartRunQuery;
   static readonly CancelQuery: DekartCancelQuery;
   static readonly GetEnv: DekartGetEnv;
+  static readonly CreateTileSession: DekartCreateTileSession;
+  static readonly GetTile: DekartGetTile;
   static readonly GetReportStream: DekartGetReportStream;
   static readonly GetReportListStream: DekartGetReportListStream;
 }
@@ -268,6 +288,24 @@ export class DekartClient {
   getEnv(
     requestMessage: proto_dekart_pb.GetEnvRequest,
     callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetEnvResponse|null) => void
+  ): UnaryResponse;
+  createTileSession(
+    requestMessage: proto_dekart_pb.CreateTileSessionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.CreateTileSessionResponse|null) => void
+  ): UnaryResponse;
+  createTileSession(
+    requestMessage: proto_dekart_pb.CreateTileSessionRequest,
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.CreateTileSessionResponse|null) => void
+  ): UnaryResponse;
+  getTile(
+    requestMessage: proto_dekart_pb.GetTileRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetTileResponse|null) => void
+  ): UnaryResponse;
+  getTile(
+    requestMessage: proto_dekart_pb.GetTileRequest,
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetTileResponse|null) => void
   ): UnaryResponse;
   getReportStream(requestMessage: proto_dekart_pb.ReportStreamRequest, metadata?: grpc.Metadata): ResponseStream<proto_dekart_pb.ReportStreamResponse>;
   getReportListStream(requestMessage: proto_dekart_pb.ReportListRequest, metadata?: grpc.Metadata): ResponseStream<proto_dekart_pb.ReportListResponse>;

@@ -841,3 +841,148 @@ export namespace CreateReportResponse {
   }
 }
 
+export class CreateTileSessionRequest extends jspb.Message {
+  getMaptype(): CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap];
+  setMaptype(value: CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap]): void;
+
+  getLanguage(): string;
+  setLanguage(value: string): void;
+
+  getRegion(): string;
+  setRegion(value: string): void;
+
+  getImageformat(): string;
+  setImageformat(value: string): void;
+
+  clearLayertypesList(): void;
+  getLayertypesList(): Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>;
+  setLayertypesList(value: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>): void;
+  addLayertypes(value: CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap], index?: number): CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap];
+
+  getOverlay(): boolean;
+  setOverlay(value: boolean): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateTileSessionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateTileSessionRequest): CreateTileSessionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateTileSessionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateTileSessionRequest;
+  static deserializeBinaryFromReader(message: CreateTileSessionRequest, reader: jspb.BinaryReader): CreateTileSessionRequest;
+}
+
+export namespace CreateTileSessionRequest {
+  export type AsObject = {
+    maptype: CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap],
+    language: string,
+    region: string,
+    imageformat: string,
+    layertypesList: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>,
+    overlay: boolean,
+  }
+
+  export interface MapTypeMap {
+    TYPE_ROADMAP: 0;
+    TYPE_SATELLITE: 1;
+    TYPE_TERRAIN: 2;
+    TYPE_STREETVIEW: 3;
+  }
+
+  export const MapType: MapTypeMap;
+
+  export interface LayerTypeMap {
+    TYPE_LAYER_ROADMAP: 0;
+    TYPE_LAYER_STREETVIEW: 1;
+    TYPE_LAYER_TRAFFIC: 2;
+  }
+
+  export const LayerType: LayerTypeMap;
+}
+
+export class CreateTileSessionResponse extends jspb.Message {
+  getSessionid(): string;
+  setSessionid(value: string): void;
+
+  getExpiry(): string;
+  setExpiry(value: string): void;
+
+  getTilewidth(): number;
+  setTilewidth(value: number): void;
+
+  getTileheight(): number;
+  setTileheight(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): CreateTileSessionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: CreateTileSessionResponse): CreateTileSessionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: CreateTileSessionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): CreateTileSessionResponse;
+  static deserializeBinaryFromReader(message: CreateTileSessionResponse, reader: jspb.BinaryReader): CreateTileSessionResponse;
+}
+
+export namespace CreateTileSessionResponse {
+  export type AsObject = {
+    sessionid: string,
+    expiry: string,
+    tilewidth: number,
+    tileheight: number,
+  }
+}
+
+export class GetTileRequest extends jspb.Message {
+  getSessionid(): string;
+  setSessionid(value: string): void;
+
+  getZoomlevel(): number;
+  setZoomlevel(value: number): void;
+
+  getTilex(): number;
+  setTilex(value: number): void;
+
+  getTiley(): number;
+  setTiley(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetTileRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetTileRequest): GetTileRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetTileRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetTileRequest;
+  static deserializeBinaryFromReader(message: GetTileRequest, reader: jspb.BinaryReader): GetTileRequest;
+}
+
+export namespace GetTileRequest {
+  export type AsObject = {
+    sessionid: string,
+    zoomlevel: number,
+    tilex: number,
+    tiley: number,
+  }
+}
+
+export class GetTileResponse extends jspb.Message {
+  getTileimage(): Uint8Array | string;
+  getTileimage_asU8(): Uint8Array;
+  getTileimage_asB64(): string;
+  setTileimage(value: Uint8Array | string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetTileResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetTileResponse): GetTileResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetTileResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetTileResponse;
+  static deserializeBinaryFromReader(message: GetTileResponse, reader: jspb.BinaryReader): GetTileResponse;
+}
+
+export namespace GetTileResponse {
+  export type AsObject = {
+    tileimage: Uint8Array | string,
+  }
+}
+

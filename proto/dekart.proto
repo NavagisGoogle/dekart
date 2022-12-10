@@ -23,6 +23,10 @@ service Dekart {
 
     rpc GetEnv(GetEnvRequest) returns (GetEnvResponse) {}
 
+    // google maps 
+    rpc CreateTileSession(CreateTileSessionRequest) returns (CreateTileSessionResponse) {}
+    rpc GetTile(GetTileRequest) returns (GetTileResponse) {}
+
     // streams
     rpc GetReportStream(ReportStreamRequest) returns (stream ReportStreamResponse) {}
     rpc GetReportListStream(ReportListRequest) returns (stream ReportListResponse) {}
@@ -217,4 +221,42 @@ message CreateReportRequest {
 
 message CreateReportResponse {
     Report report = 1;
+}
+
+message CreateTileSessionRequest {
+    enum MapType {
+        TYPE_ROADMAP = 0;
+        TYPE_SATELLITE = 1;
+        TYPE_TERRAIN = 2;
+        TYPE_STREETVIEW = 3;
+    }
+    enum LayerType {
+        TYPE_LAYER_ROADMAP = 0;
+        TYPE_LAYER_STREETVIEW = 1;
+        TYPE_LAYER_TRAFFIC = 2;
+    }
+    MapType mapType = 1;
+    string language = 2;
+    string region = 3;
+    string imageFormat = 4;
+    repeated LayerType layerTypes = 5;
+    bool overlay = 6;
+}
+
+message CreateTileSessionResponse {
+    string sessionId = 1;
+    string expiry = 2;
+    int32 tileWidth = 3;
+    int32 tileHeight = 4;
+}
+
+message GetTileRequest {
+    string sessionId = 1;
+    int32 zoomLevel = 2;
+    int32 tileX = 3;
+    int32 tileY = 4;
+}
+
+message GetTileResponse {
+    bytes tileImage = 1;
 }

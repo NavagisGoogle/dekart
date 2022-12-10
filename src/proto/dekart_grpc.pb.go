@@ -37,6 +37,9 @@ type DekartClient interface {
 	RunQuery(ctx context.Context, in *RunQueryRequest, opts ...grpc.CallOption) (*RunQueryResponse, error)
 	CancelQuery(ctx context.Context, in *CancelQueryRequest, opts ...grpc.CallOption) (*CancelQueryResponse, error)
 	GetEnv(ctx context.Context, in *GetEnvRequest, opts ...grpc.CallOption) (*GetEnvResponse, error)
+	// google maps
+	CreateTileSession(ctx context.Context, in *CreateTileSessionRequest, opts ...grpc.CallOption) (*CreateTileSessionResponse, error)
+	GetTile(ctx context.Context, in *GetTileRequest, opts ...grpc.CallOption) (*GetTileResponse, error)
 	// streams
 	GetReportStream(ctx context.Context, in *ReportStreamRequest, opts ...grpc.CallOption) (Dekart_GetReportStreamClient, error)
 	GetReportListStream(ctx context.Context, in *ReportListRequest, opts ...grpc.CallOption) (Dekart_GetReportListStreamClient, error)
@@ -149,6 +152,24 @@ func (c *dekartClient) GetEnv(ctx context.Context, in *GetEnvRequest, opts ...gr
 	return out, nil
 }
 
+func (c *dekartClient) CreateTileSession(ctx context.Context, in *CreateTileSessionRequest, opts ...grpc.CallOption) (*CreateTileSessionResponse, error) {
+	out := new(CreateTileSessionResponse)
+	err := c.cc.Invoke(ctx, "/Dekart/CreateTileSession", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *dekartClient) GetTile(ctx context.Context, in *GetTileRequest, opts ...grpc.CallOption) (*GetTileResponse, error) {
+	out := new(GetTileResponse)
+	err := c.cc.Invoke(ctx, "/Dekart/GetTile", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *dekartClient) GetReportStream(ctx context.Context, in *ReportStreamRequest, opts ...grpc.CallOption) (Dekart_GetReportStreamClient, error) {
 	stream, err := c.cc.NewStream(ctx, &Dekart_ServiceDesc.Streams[0], "/Dekart/GetReportStream", opts...)
 	if err != nil {
@@ -232,6 +253,9 @@ type DekartServer interface {
 	RunQuery(context.Context, *RunQueryRequest) (*RunQueryResponse, error)
 	CancelQuery(context.Context, *CancelQueryRequest) (*CancelQueryResponse, error)
 	GetEnv(context.Context, *GetEnvRequest) (*GetEnvResponse, error)
+	// google maps
+	CreateTileSession(context.Context, *CreateTileSessionRequest) (*CreateTileSessionResponse, error)
+	GetTile(context.Context, *GetTileRequest) (*GetTileResponse, error)
 	// streams
 	GetReportStream(*ReportStreamRequest, Dekart_GetReportStreamServer) error
 	GetReportListStream(*ReportListRequest, Dekart_GetReportListStreamServer) error
@@ -274,6 +298,12 @@ func (UnimplementedDekartServer) CancelQuery(context.Context, *CancelQueryReques
 }
 func (UnimplementedDekartServer) GetEnv(context.Context, *GetEnvRequest) (*GetEnvResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetEnv not implemented")
+}
+func (UnimplementedDekartServer) CreateTileSession(context.Context, *CreateTileSessionRequest) (*CreateTileSessionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateTileSession not implemented")
+}
+func (UnimplementedDekartServer) GetTile(context.Context, *GetTileRequest) (*GetTileResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetTile not implemented")
 }
 func (UnimplementedDekartServer) GetReportStream(*ReportStreamRequest, Dekart_GetReportStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetReportStream not implemented")
@@ -492,6 +522,42 @@ func _Dekart_GetEnv_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dekart_CreateTileSession_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateTileSessionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DekartServer).CreateTileSession(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Dekart/CreateTileSession",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DekartServer).CreateTileSession(ctx, req.(*CreateTileSessionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Dekart_GetTile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetTileRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DekartServer).GetTile(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Dekart/GetTile",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DekartServer).GetTile(ctx, req.(*GetTileRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Dekart_GetReportStream_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ReportStreamRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -584,6 +650,14 @@ var Dekart_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetEnv",
 			Handler:    _Dekart_GetEnv_Handler,
+		},
+		{
+			MethodName: "CreateTileSession",
+			Handler:    _Dekart_CreateTileSession_Handler,
+		},
+		{
+			MethodName: "GetTile",
+			Handler:    _Dekart_GetTile_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{
