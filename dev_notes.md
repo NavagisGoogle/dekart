@@ -98,9 +98,9 @@ go version
 
 ## D. *Main Event*: Setup the Repo
 ### 1. Clone repo
-Note: Make sure you are in your working directory (e.g. `/var/www/...`)
+Note: Make sure you are in your working directory (e.g. `/var/www/...`) and also make sure you have appropriate access permissions for the repo
 ```
-git clone https://github.com/dekart-xyz/dekart.git
+git clone https://github.com/NavagisGoogle/dekart.git
 ```
 
 ### 2. Edit export_variables.sh to set the appropriate env variables for the application
@@ -196,24 +196,22 @@ protoc plugin for ts
 cd ../../..
 npm install -g ts-protoc-gen
 ```
-
-### 5. Before building .proto file, make sure you back up the older generated protocol buffer files in case you want to revert
+### 5. Get inside dekart directory
 ```
-mkdir -p dekart/src/proto_backup
-mv dekart/src/proto/* dekart/src/proto_backup
+cd dekart
 ```
 
-### 6. To build .proto file into language-specific protocol buffer execute the protoc command
+### 6. Before building .proto file, make sure you back up the older generated protocol buffer files in case you want to revert
 ```
-protoc --plugin="protoc-gen-ts=/usr/lib/node_modules/ts-protoc-gen/bin/protoc-gen-ts" --js_out="import_style=commonjs,binary:dekart/src" --ts_out="service=grpc-web:dekart/src" --go_out="dekart/src" --go-grpc_out="dekart/src" dekart/proto/dekart.proto
+mkdir -p src/proto_backup
+mv src/proto/* src/proto_backup
+```
+
+### 7. To build .proto file into language-specific protocol buffer execute the protoc command
+```
+protoc --plugin="protoc-gen-ts=/usr/lib/node_modules/ts-protoc-gen/bin/protoc-gen-ts" --js_out="import_style=commonjs,binary:src" --ts_out="service=grpc-web:src" --go_out="src" --go-grpc_out="src" proto/dekart.proto
 ```
 
 This will build the .proto file into protocol buffers specific for go, ts, and js and can then be used in grpc. Adjust the output filepaths accordingly. The .grpc file for go and pb_service files are also generated.
-
-### 7. Some pb files need to be moved
-```
-mv dekart/src/dekart/proto/* dekart/src/proto
-rm -r dekart/src/dekart
-```
 
 **Note**: Normally, this is not needed unless you need to add another endpoint or need to change the Schema of an existing API endpoint between the React Frontend and the Go Backend.
