@@ -63,8 +63,8 @@ There is no need to create the metadata tables for dekart since migration will d
 ## C. Setup Go lang
 ### 1. Download Go lang
 ```
-curl -O -L "https://golang.org/dl/go1.17.1.linux-$amd64.tar.gz"
-wget -L "https://golang.org/dl/go1.17.1.linux-$amd64.tar.gz"
+curl -O -L "https://golang.org/dl/go1.17.1.linux-amd64.tar.gz"
+wget -L "https://golang.org/dl/go1.17.1.linux-amd64.tar.gz"
 ```
 
 ### 2. Extract go lang from tar.gz file
