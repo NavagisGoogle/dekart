@@ -165,9 +165,9 @@ curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/p
 ```
 ### 2. Unzip package to /usr/local
 ```
-unzip -o protoc-3.14.0-linux-${PLATFORM}.zip -d /usr/local bin/protoc
-unzip -o protoc-3.14.0-linux-${PLATFORM}.zip -d /usr/local 'include/*'
-rm -f protoc-3.14.0-linux-${PLATFORM}.zip
+unzip -o protoc-3.14.0-linux-x86_64.zip -d /usr/local bin/protoc
+unzip -o protoc-3.14.0-linux-x86_64.zip -d /usr/local 'include/*'
+rm -f protoc-3.14.0-linux-x86_64.zip
 ```
 ### 3. Install buf
 ```
