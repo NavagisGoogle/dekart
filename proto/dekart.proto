@@ -225,15 +225,17 @@ message CreateReportResponse {
 
 message CreateTileSessionRequest {
     enum MapType {
-        TYPE_ROADMAP = 0;
-        TYPE_SATELLITE = 1;
-        TYPE_TERRAIN = 2;
-        TYPE_STREETVIEW = 3;
+        maptyeNone = 0;
+        roadmap = 1;
+        satellite = 2;
+        terrain = 3;
+        streetview = 4;
     }
     enum LayerType {
-        TYPE_LAYER_ROADMAP = 0;
-        TYPE_LAYER_STREETVIEW = 1;
-        TYPE_LAYER_TRAFFIC = 2;
+        layerNone = 0;
+        layerRoadmap = 1;
+        layerStreetview = 2;
+        layerTraffic = 3;
     }
     MapType mapType = 1;
     string language = 2;

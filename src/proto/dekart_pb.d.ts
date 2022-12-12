@@ -883,18 +883,20 @@ export namespace CreateTileSessionRequest {
   }
 
   export interface MapTypeMap {
-    TYPE_ROADMAP: 0;
-    TYPE_SATELLITE: 1;
-    TYPE_TERRAIN: 2;
-    TYPE_STREETVIEW: 3;
+    MAPTYENONE: 0;
+    ROADMAP: 1;
+    SATELLITE: 2;
+    TERRAIN: 3;
+    STREETVIEW: 4;
   }
 
   export const MapType: MapTypeMap;
 
   export interface LayerTypeMap {
-    TYPE_LAYER_ROADMAP: 0;
-    TYPE_LAYER_STREETVIEW: 1;
-    TYPE_LAYER_TRAFFIC: 2;
+    LAYERNONE: 0;
+    LAYERROADMAP: 1;
+    LAYERSTREETVIEW: 2;
+    LAYERTRAFFIC: 3;
   }
 
   export const LayerType: LayerTypeMap;
