@@ -1,0 +1,19 @@
+#!/bin/bash
+export DEKART_MAPBOX_TOKEN=
+export DEKART_POSTGRES_DB=
+export DEKART_POSTGRES_PORT=
+export DEKART_POSTGRES_HOST=localhost
+export DEKART_POSTGRES_USER=
+export DEKART_POSTGRES_PASSWORD=
+export DEKART_PORT=
+export DEKART_DATASOURCE=
+export DEKART_STORAGE=
+export DEKART_CLOUD_STORAGE_BUCKET=
+export DEKART_GOOGLE_MAPS_TOKEN=
+
+# This varaible is not set for now since this will cause CORS related errors 
+# export DEKART_CORS_ORIGIN=Access-Control-Allow-Origin
+
+export GOOGLE_APPLICATION_CREDENTIALS=
+export DEKART_BIGQUERY_PROJECT_ID=
+export DEKART_BIGQUERY_MAX_BYTES_BILLED=

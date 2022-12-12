@@ -109,6 +109,24 @@ Dekart.GetEnv = {
   responseType: proto_dekart_pb.GetEnvResponse
 };
 
+Dekart.CreateTileSession = {
+  methodName: "CreateTileSession",
+  service: Dekart,
+  requestStream: false,
+  responseStream: false,
+  requestType: proto_dekart_pb.CreateTileSessionRequest,
+  responseType: proto_dekart_pb.CreateTileSessionResponse
+};
+
+Dekart.GetTile = {
+  methodName: "GetTile",
+  service: Dekart,
+  requestStream: false,
+  responseStream: false,
+  requestType: proto_dekart_pb.GetTileRequest,
+  responseType: proto_dekart_pb.GetTileResponse
+};
+
 Dekart.GetReportStream = {
   methodName: "GetReportStream",
   service: Dekart,
@@ -449,6 +467,68 @@ DekartClient.prototype.getEnv = function getEnv(requestMessage, metadata, callba
     callback = arguments[1];
   }
   var client = grpc.unary(Dekart.GetEnv, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+DekartClient.prototype.createTileSession = function createTileSession(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Dekart.CreateTileSession, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+DekartClient.prototype.getTile = function getTile(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Dekart.GetTile, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

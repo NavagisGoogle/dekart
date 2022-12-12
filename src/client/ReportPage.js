@@ -6,7 +6,7 @@ import { KeplerGl } from '@dekart-xyz/kepler.gl/dist/components'
 import styles from './ReportPage.module.css'
 import { AutoSizer } from 'react-virtualized'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset } from './actions'
+import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSession } from './actions'
 import { EditOutlined, WarningFilled } from '@ant-design/icons'
 import { Query as QueryType } from '../proto/dekart_pb'
 import Tabs from 'antd/es/tabs'
@@ -246,7 +246,8 @@ export default function ReportPage ({ edit }) {
   const dispatch = useDispatch()
 
   const [mapChanged, setMapChanged] = useState(false)
-
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  useEffect(() => dispatch(createTileSession()), [])
   useEffect(() => {
     // make sure kepler loaded before firing kepler actions
     if (!envLoaded) {
