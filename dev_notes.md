@@ -1,9 +1,14 @@
-# Steps on how to setup development environment (without having to build in docker)
+## Steps on how to setup development environment sans docker
+## There are several ways to approach this build.  These are the details of one approach
 
-(Note: This was successfully tested in fresh Ubuntu 18.04 LTS - using VirtualBox)
+## Note: This was successfully tested in fresh Ubuntu 18.04 LTS - using VirtualBox
+## If you do not have VirtualBox, download the proper version for you PC here: https://www.virtualbox.org/wiki/Downloads
+## If you do not have Ubuntu 18.04 LTS image, download this: https://releases.ubuntu.com/18.04/ubuntu-18.04.6-desktop-amd64.iso
+## Create a VM using the Ubuntu image with a suggested 20GB storage drive allocated and enable Guest Additions (checkbox) to enable cut/paste from your desktop
 
 ## A. Setup Appropriate Version of Node
-### 1. Install curl
+## 1. Install curl
+
 ```
 sudo apt update && sudo apt install curl
 ```
@@ -19,7 +24,7 @@ sudo apt-get install -y nodejs
 node -v
 ```
 
-**Note**: NPM v18 will also be installed together with Node
+## **Note**: NPM v18 will also be installed together with Node
 
 ## B. Setup Local Postgresql Server
 
@@ -54,14 +59,14 @@ sudo -u postgres psql
 ```
 
 ### 6. Create the necessary database
-Any name will do as long as you will use it in your DEKART_POSTGRES_DB Variable
+### Any name will do as long as you will use it in your DEKART_POSTGRES_DB Variable
 ```
 CREATE DATABASE [name of db];
 ```
-There is no need to create the metadata tables for dekart since migration will do just that.
+### There is no need to create the metadata tables for dekart since migration will do just that.
 
 ## C. Setup Go lang
-### 1. Download Go lang
+## 1. Download Go lang
 ```
 curl -O -L "https://golang.org/dl/go1.17.1.linux-amd64.tar.gz"
 wget -L "https://golang.org/dl/go1.17.1.linux-amd64.tar.gz"
@@ -78,11 +83,11 @@ sudo chown -R root:root ./go
 sudo mv -v go /usr/local
 ```
 
-### 4. Setup go lang PATH environment (IMPORTANT!)
+### 4. Setup go lang PATH environment. IMPORTANT! (Everything is important, but this is ALL CAPS IMPORTANT--with an exclamation point!)
 ```
 nano ~/.bash_profile
 ```
-Append the following two lines
+## Append the following two lines
 ```
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
@@ -94,11 +99,12 @@ source ~/.bash_profile
 go version
 ```
 
-(**NOTE**: You may need to perform `source` every time you start the vm)
+## **NOTE**: You may need to perform `source` every time you start the vm
 
 ## D. *Main Event*: Setup the Repo
-### 1. Clone repo
-Note: Make sure you are in your working directory (e.g. `/var/www/...`) and also make sure you have appropriate access permissions for the repo
+## 1. Clone repo
+
+## Note: Make sure you are in your working directory (e.g. `/var/www/...`) and also make sure you have appropriate access permissions for the repo
 ```
 git clone https://github.com/NavagisGoogle/dekart.git
 ```
@@ -110,10 +116,11 @@ git clone https://github.com/NavagisGoogle/dekart.git
 source export_variables.sh
 ```
 
-### 4. Edit the .env.development file. Change the `localhost` into your network IP
-For example:
+### 4. Edit the .env.development file. Change the `localhost` into your network IP, replacing 192.168.1.189 below, leaving :8080
+### to find your current IP, hit Windows key, type cmd, Enter, type ipconfig, Enter
+
 ```
-REACT_APP_API_HOST=http://192.168.xxx.xxx:8080
+REACT_APP_API_HOST=http://192.168.1.189:8080
 ```
 
 ### 5. Setup Github [Personal Access Token](https://github.com/settings/tokens) so you are able to download @dekart-xyz/kepler.gl package
@@ -121,7 +128,8 @@ REACT_APP_API_HOST=http://192.168.xxx.xxx:8080
 ### 6. Generate a new classic token with *read:packages* privilege.
 
 ### 7. Create .npmrc file and add the following lines
-Use the generated personal access token in the _authToken query parameter
+
+## Use the generated personal access token in the _authToken query parameter
 ```
 @OWNER:registry=https://npm.pkg.github.com
 //npm.pkg.github.com/:_authToken=${PERSONAL ACCESS TOKEN}
@@ -144,7 +152,8 @@ go run src/server/main.go
 ```
 
 ### 11. Start the frontend application. 
-This should take at most 30 seconds as opposed to rebuilding the application over again for every change you implement in the application
+## This should take at most 30 seconds as opposed to rebuilding the application over again for every change you implement in the application
+
 ```
 npm start
 ```
@@ -154,7 +163,7 @@ npm start
 http://<network-ip>:3000
 ```
 
-### CONGRATULATIONS! You have successfully setup the development environment of dekart.
+## CONGRATULATIONS. You have successfully setup the development environment of dekart.
 ---
 ## E. Setup Protocol Buffer Compiler (Optional)
 ### 1. Install protoc compiler
