@@ -5,37 +5,6 @@ import { openReport, reportTitleChange, reportUpdate, saveMap, reportsListUpdate
 import { Query } from '../proto/dekart_pb'
 
 const customKeplerGlReducer = keplerGlReducer.initialState({
-  mapStyle: {
-    mapStyles: {
-      streets2d: {
-        id: 'streets2d',
-        label: 'Street',
-        url: 'http://localhost:3000/styles/gmp-2d-streets.json',
-        icon: 'http://localhost:3000/logo192.png'
-      },
-      satellite: {
-        id: 'satellite',
-        label: 'Satellite',
-        url: 'http://localhost:3000/styles/gmp-satellite.json',
-        icon: 'http://localhost:3000/logo192.png'
-      },
-      terrain: {
-        id: 'terrain',
-        label: 'Terrain',
-        url: 'http://localhost:3000/styles/gmp-terrain.json',
-        icon: 'http://localhost:3000/logo192.png'
-      },
-      hybrid: {
-        id: 'hybrid',
-        label: 'Hybrid',
-        url: 'http://localhost:3000/styles/gmp-hybrid.json',
-        icon: 'http://localhost:3000/logo192.png'
-      },
-
-    },
-    // Set initial map style
-    styleType: 'streets2d'
-  },
   uiState: {
     currentModal: null,
     activeSidePanel: null
