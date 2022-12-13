@@ -39,5 +39,8 @@ npm-debug.log*
 .eslintcache
 .npmrc
 
+# env variable setup commands
+export_variables.sh
+
 # backup files
 /src/proto_backup

@@ -103,7 +103,13 @@ Note: Make sure you are in your working directory (e.g. `/var/www/...`) and also
 git clone https://github.com/NavagisGoogle/dekart.git
 ```
 
-### 2. Edit export_variables.sh to set the appropriate env variables for the application
+### 2. Copy the export_variables_sample.sh file to export_variables.sh
+**WARNING**: Do not directly edit export_variables_sample.sh as it is tracked by git and may be pushed accidentally to the repository
+```
+cp export_variables_sample.sh export_variables.sh
+nano export_variables.sh
+```
+Then edit export_variables.sh and input all the environment variables for the project
 
 ### 3. Load the environment variables from export_variables.sh
 ```
@@ -129,7 +135,7 @@ Use the generated personal access token in the _authToken query parameter
 
 ### 8. Install the repo dependencies
 ```
-npm i --legacy-peer-deps
+npm ci --legacy-peer-deps
 ```
 
 ### 9. Build the go lang server (This will install all the application dependencies)
