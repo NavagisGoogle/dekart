@@ -14,9 +14,9 @@ export function createTileSession () {
         req.setLayertypesList([1])
         req.setOverlay(false)
         try {
-            const tileSession  = await unary(Dekart.CreateTileSession, req)
+            const { sessionid }  = await unary(Dekart.CreateTileSession, req)
             console.log('Create Tile Session Call was successful')
-            console.log(tileSession)
+            dispatch({type: createTileSession.name, sessionId: sessionid})
         } catch (err) {
             dispatch(error(err))
             console.log(err)

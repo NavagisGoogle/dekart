@@ -109,7 +109,13 @@ go version
 git clone https://github.com/NavagisGoogle/dekart.git
 ```
 
-### 2. Edit export_variables.sh to set the appropriate env variables for the application
+### 2. Copy the export_variables_sample.sh file to export_variables.sh
+**WARNING**: Do not directly edit export_variables_sample.sh as it is tracked by git and may be pushed accidentally to the repository
+```
+cp export_variables_sample.sh export_variables.sh
+nano export_variables.sh
+```
+Then edit export_variables.sh and input all the environment variables for the project
 
 ### 3. Load the environment variables from export_variables.sh
 ```
@@ -137,7 +143,7 @@ REACT_APP_API_HOST=http://192.168.1.189:8080
 
 ### 8. Install the repo dependencies
 ```
-npm i --legacy-peer-deps
+npm ci --legacy-peer-deps
 ```
 
 ### 9. Build the go lang server (This will install all the application dependencies)
@@ -174,9 +180,9 @@ curl -OL https://github.com/protocolbuffers/protobuf/releases/download/v3.14.0/p
 ```
 ### 2. Unzip package to /usr/local
 ```
-unzip -o protoc-3.14.0-linux-${PLATFORM}.zip -d /usr/local bin/protoc
-unzip -o protoc-3.14.0-linux-${PLATFORM}.zip -d /usr/local 'include/*'
-rm -f protoc-3.14.0-linux-${PLATFORM}.zip
+unzip -o protoc-3.14.0-linux-x86_64.zip -d /usr/local bin/protoc
+unzip -o protoc-3.14.0-linux-x86_64.zip -d /usr/local 'include/*'
+rm -f protoc-3.14.0-linux-x86_64.zip
 ```
 ### 3. Install buf
 ```
