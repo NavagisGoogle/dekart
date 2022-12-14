@@ -4,7 +4,7 @@
     "raster-tiles": {
       "type": "raster",
       "tiles": [
-        "https://www.googleapis.com/tile/v1/tiles/{z}/{x}/{y}?key=AIzaSyCjWa8d8B1kZp4aOmcNsrVcRQ0x2hxq8tI&session=ALLlCWUP1pwj3qlch_o6PmBg38nzMPvrZRtKhxxNhB7Wg0oC94hsdhxs-8wwSQ8PXa2EzRaE_2Om_UZSDPbk6nN0-g"
+        "https://www.googleapis.com/tile/v1/tiles/{z}/{x}/{y}?key={key}&session={session}"
       ],
       "tileSize": 256,
       "attribution": "Map tiles by <a target=\"_top\" rel=\"noopener\" href=\"https://maps.google.com\">Google</a>"

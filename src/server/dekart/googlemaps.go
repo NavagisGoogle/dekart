@@ -33,7 +33,7 @@ func (s Server) CreateTileSession(ctx context.Context, req *proto.CreateTileSess
 	}
 	fmt.Printf("json data: %s, type: %T\n", requestBodyJson, requestBodyJson)
 
-	gmapApiKey := os.Getenv("DEKART_GOOGLE_MAPS_TOKEN")
+	gmapApiKey := os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN")
 	fullUrl := fmt.Sprintf("%s/createSession?key=%s", GMAP_BASE_URL, gmapApiKey)
 	resp, err := http.Post(fullUrl, "application/json", bytes.NewBuffer(requestBodyJson))
 	if err != nil {

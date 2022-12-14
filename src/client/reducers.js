@@ -355,7 +355,8 @@ function fileUploadStatus (state = {}, action) {
   }
 }
 
-function googleMaps (state = {}, action) {
+const defaultGoogleMapsState = {sessionId: null, zoomLevel: 0, tileX: 0, tileY: 0}
+function googleMaps (state = defaultGoogleMapsState, action) {
   switch (action.type) {
     case createTileSession.name:
       return {

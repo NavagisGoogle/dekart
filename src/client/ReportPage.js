@@ -3,6 +3,7 @@ import Input from 'antd/es/input'
 import Modal from 'antd/es/modal'
 import { useEffect, useState, Component } from 'react'
 import { KeplerGl } from '@dekart-xyz/kepler.gl/dist/components'
+import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import styles from './ReportPage.module.css'
 import { AutoSizer } from 'react-virtualized'
 import { useDispatch, useSelector } from 'react-redux'
@@ -12,6 +13,7 @@ import { Query as QueryType } from '../proto/dekart_pb'
 import Tabs from 'antd/es/tabs'
 import { KeplerGlSchema } from '@dekart-xyz/kepler.gl/dist/schemas'
 import classnames from 'classnames'
+import GoogleMaps from './GoogleMaps'
 import { Header } from './Header'
 import ReportHeaderButtons from './ReportHeaderButtons'
 import Downloading from './Downloading'
@@ -211,19 +213,35 @@ function Kepler () {
     )
   }
   return (
+    // <div className={styles.keplerFlex}>
+    //   <div className={styles.keplerBlock}>
+    //     <AutoSizer>
+    //       {({ height, width }) => (
+    //         <CatchKeplerError onError={(err) => dispatch(error(err))}>
+    //           <KeplerGl
+    //             id='kepler'
+    //             mapboxApiAccessToken={env.variables.MAPBOX_TOKEN}
+    //             width={width}
+    //             height={height}
+    //           />
+    //         </CatchKeplerError>
+    //       )}
+    //     </AutoSizer>
+    //   </div>
+    // </div>
     <div className={styles.keplerFlex}>
       <div className={styles.keplerBlock}>
         <AutoSizer>
-          {({ height, width }) => (
-            <CatchKeplerError onError={(err) => dispatch(error(err))}>
-              <KeplerGl
-                id='kepler'
-                mapboxApiAccessToken={env.variables.MAPBOX_TOKEN}
-                width={width}
-                height={height}
-              />
-            </CatchKeplerError>
-          )}
+           {({ height, width }) => (
+            <Wrapper apiKey={env.variables.REACT_APP_GOOGLEMAPS_API_TOKEN}>
+              <CatchKeplerError onError={(err) => dispatch(error(err))}>
+                <GoogleMaps 
+                  center={{ lat: -34.397, lng: 150.644 }} 
+                  zoom={4}
+                  style={{height: height, width: width}}/>
+              </CatchKeplerError>
+            </Wrapper>
+            )}
         </AutoSizer>
       </div>
     </div>
