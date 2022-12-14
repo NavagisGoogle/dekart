@@ -56,6 +56,7 @@ message GetEnvResponse {
             TYPE_ALLOW_FILE_UPLOAD = 4;
             TYPE_DATASOURCE = 5;
             TYPE_STORAGE = 6;
+            TYPE_REACT_APP_GOOGLEMAPS_API_TOKEN=7;
         }
         Type type = 1;
         string value = 2;
