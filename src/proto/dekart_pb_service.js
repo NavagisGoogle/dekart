@@ -118,13 +118,13 @@ Dekart.CreateTileSession = {
   responseType: proto_dekart_pb.CreateTileSessionResponse
 };
 
-Dekart.GetTile = {
-  methodName: "GetTile",
+Dekart.GetSessionToken = {
+  methodName: "GetSessionToken",
   service: Dekart,
   requestStream: false,
   responseStream: false,
-  requestType: proto_dekart_pb.GetTileRequest,
-  responseType: proto_dekart_pb.GetTileResponse
+  requestType: proto_dekart_pb.GetSessionTokenRequest,
+  responseType: proto_dekart_pb.GetSessionTokenResponse
 };
 
 Dekart.GetReportStream = {
@@ -524,11 +524,11 @@ DekartClient.prototype.createTileSession = function createTileSession(requestMes
   };
 };
 
-DekartClient.prototype.getTile = function getTile(requestMessage, metadata, callback) {
+DekartClient.prototype.getSessionToken = function getSessionToken(requestMessage, metadata, callback) {
   if (arguments.length === 2) {
     callback = arguments[1];
   }
-  var client = grpc.unary(Dekart.GetTile, {
+  var client = grpc.unary(Dekart.GetSessionToken, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,
