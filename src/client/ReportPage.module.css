@@ -107,6 +107,16 @@
     display: none;
 }
 
+.keplerBlock :global #kepler-gl__kepler .mapbox-attribution-container {
+    display: none;
+}
+
+.keplerBlock :global .google-attribution-container {
+    bottom: 0;
+    right: 0;
+    position: absolute;
+}
+
 .readOnly span {
     margin-right: 5px;
 }

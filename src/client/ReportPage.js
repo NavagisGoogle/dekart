@@ -17,6 +17,14 @@ import ReportHeaderButtons from './ReportHeaderButtons'
 import Downloading from './Downloading'
 import Dataset from './Dataset'
 
+function AddGoogleAttribution() {
+  return(
+    <div className="google-attribution-container">
+      Map tiles by <a target="_top" rel="noopener" href="https://maps.google.com">Google</a>
+    </div>
+  )
+}
+
 function TabIcon ({ query }) {
   let iconColor = 'transparent'
   if (query.jobError) {
@@ -224,6 +232,7 @@ function Kepler () {
                 width={width}
                 height={height}
               />
+              <AddGoogleAttribution />
             </CatchKeplerError>
           )}
         </AutoSizer>
