@@ -3,17 +3,15 @@ import Input from 'antd/es/input'
 import Modal from 'antd/es/modal'
 import { useEffect, useState, Component } from 'react'
 import { KeplerGl } from '@dekart-xyz/kepler.gl/dist/components'
-import { Wrapper, Status } from "@googlemaps/react-wrapper";
 import styles from './ReportPage.module.css'
 import { AutoSizer } from 'react-virtualized'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSession } from './actions'
+import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSessions } from './actions'
 import { EditOutlined, WarningFilled } from '@ant-design/icons'
 import { Query as QueryType } from '../proto/dekart_pb'
 import Tabs from 'antd/es/tabs'
 import { KeplerGlSchema } from '@dekart-xyz/kepler.gl/dist/schemas'
 import classnames from 'classnames'
-import GoogleMaps from './GoogleMaps'
 import { Header } from './Header'
 import ReportHeaderButtons from './ReportHeaderButtons'
 import Downloading from './Downloading'
@@ -202,6 +200,7 @@ class CatchKeplerError extends Component {
   }
 }
 
+
 function Kepler () {
   const env = useSelector(state => state.env)
   const dispatch = useDispatch()
@@ -212,40 +211,24 @@ function Kepler () {
       </div>
     )
   }
+
   return (
-    // <div className={styles.keplerFlex}>
-    //   <div className={styles.keplerBlock}>
-    //     <AutoSizer>
-    //       {({ height, width }) => (
-    //         <CatchKeplerError onError={(err) => dispatch(error(err))}>
-    //           <KeplerGl
-    //             id='kepler'
-    //             mapboxApiAccessToken={env.variables.MAPBOX_TOKEN}
-    //             width={width}
-    //             height={height}
-    //           />
-    //         </CatchKeplerError>
-    //       )}
-    //     </AutoSizer>
-    //   </div>
-    // </div>
     <div className={styles.keplerFlex}>
       <div className={styles.keplerBlock}>
         <AutoSizer>
-           {({ height, width }) => (
-            <Wrapper apiKey={env.variables.REACT_APP_GOOGLEMAPS_API_TOKEN}>
-              <CatchKeplerError onError={(err) => dispatch(error(err))}>
-                <GoogleMaps 
-                  center={{ lat: -34.397, lng: 150.644 }} 
-                  zoom={4}
-                  style={{height: height, width: width}}/>
-              </CatchKeplerError>
-            </Wrapper>
-            )}
+          {({ height, width }) => (
+            <CatchKeplerError onError={(err) => dispatch(error(err))}>
+              <KeplerGl
+                id='kepler'
+                mapboxApiAccessToken={env.variables.MAPBOX_TOKEN}
+                width={width}
+                height={height}
+              />
+            </CatchKeplerError>
+          )}
         </AutoSizer>
       </div>
     </div>
-
   )
 }
 
@@ -265,7 +248,7 @@ export default function ReportPage ({ edit }) {
 
   const [mapChanged, setMapChanged] = useState(false)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => dispatch(createTileSession()), [])
+  useEffect(() => dispatch(createTileSessions()), [])
   useEffect(() => {
     // make sure kepler loaded before firing kepler actions
     if (!envLoaded) {

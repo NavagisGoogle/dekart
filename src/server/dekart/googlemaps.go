@@ -5,6 +5,7 @@ import (
 	"bytes"
 	"context"
 	"dekart/src/proto"
+	"dekart/src/server/user"
 	"dekart/src/server/uuid"
 	"fmt"
 	"io/ioutil"
@@ -13,6 +14,7 @@ import (
 	"time"
 	"strconv"
 
+	"github.com/gorilla/mux"
 	"google.golang.org/protobuf/encoding/protojson"
 	"github.com/rs/zerolog/log"
 	"google.golang.org/grpc/codes"
@@ -47,7 +49,7 @@ func (s Server) CreateTileSession(ctx context.Context, req *proto.CreateTileSess
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	log.Info().Msg("Success API Call")
+	log.Info().Msgf("Success API Call for maptype = %s", req.MapType)
 	fmt.Printf("\n")
 	fmt.Println(string(body))
 
@@ -71,6 +73,7 @@ func (s Server) CreateTileSession(ctx context.Context, req *proto.CreateTileSess
 
 	return  &proto.CreateTileSessionResponse {
 		SessionId: *sessionId,
+		SessionToken: sessionToken,
 		Expiry: expiry,
 		TileWidth: tileWidth,
 		TileHeight: tileHeight,
@@ -88,7 +91,7 @@ func (s Server) InsertSession(ctx context.Context, sessionToken string, expiry s
 	tm := time.Unix(expiryInt, 0)
 
 	_, err = s.db.ExecContext(ctx,
-		"INSERT INTO map_sessions (session_id, expiration, session_token) VALUES ($1, $2, $3)",
+		"insert into map_sessions (session_id, expiration, session_token) values ($1, $2, $3)",
 		id,
 		tm,
 		sessionToken,
@@ -98,4 +101,200 @@ func (s Server) InsertSession(ctx context.Context, sessionToken string, expiry s
 		return nil, err
 	}
 	return &id, nil
+}
+
+type TokenExpiration struct {
+	HasNoSessionToken bool `json:"hasNoSessionToken"`
+	SessionId string `json:"sessionId"`
+	Expired bool `json:"expired"`
+	Expiry string `json:"expiry"`
+}
+
+// Check Session Token Expiration
+func (s Server) ServeCheckTokenExpiration(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	ctx := r.Context()
+	claims := user.GetClaims(ctx)
+	if claims == nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	}
+	log.Info().Msgf("Success Get Map Style for %s", vars["mapstyle"])
+
+	jsonResponse := fmt.Sprintf(`{
+		"hasNoSessionToken": false,
+		"sessionId": "2389289453",
+		"expired": true,
+		"expiry": "December 15, 2022"
+	}`)
+
+	var tokenExpiration TokenExpiration
+	err := json.Unmarshal([]byte(jsonResponse), &tokenExpiration)
+	if err != nil {
+		log.Err(err).Send()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	tokenExpirationBytes, err := json.Marshal(tokenExpiration)
+	if err != nil {
+		log.Err(err).Send()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Header().Set("Cache-Control", "public, max-age=31536000")
+	w.Write(tokenExpirationBytes)
+}
+
+type RasterTiles struct {
+	Type string `json:"type"`
+	Tiles []string `json:"tiles"`
+	TileSize int32 `json:"tileSize"`
+	Attribution string `json:"attribution"`
+}
+
+type Sources struct {
+	RasterTiles RasterTiles `json:"raster-tiles"`
+}
+
+type Layer struct {
+	Id string `json:"id"`
+	Type string `json:"type"`
+	Source string `json:"source"`
+	MinZoom int32 `json:"minzoom"`
+	MaxZoom int32 `json:"maxzoom"`
+}
+
+type MapStyle struct {
+	Version int32 `json:"version"`
+	Sources Sources `json:"sources"`
+	Layers []Layer `json:"layers"`
+}
+
+
+func (s Server) UpdateMapStyle(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	ctx := r.Context()
+	claims := user.GetClaims(ctx)
+	if claims == nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	}
+
+	_, err := s.db.ExecContext(ctx,
+	`update map_sessions 
+	set map_style = $1
+	where session_id = $2`,
+	vars["mapstyle"],
+	vars["sessionid"],
+	)
+	if err != nil {
+		log.Err(err).Send()
+		return
+	}
+}
+
+
+func (m *MapStyle) ToJsonBytes() ([]byte, error) {
+	buffer := &bytes.Buffer{}
+	encoder := json.NewEncoder(buffer)
+	encoder.SetEscapeHTML(false)
+	err := encoder.Encode(m)
+	return buffer.Bytes(), err
+}
+
+
+func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	ctx := r.Context()
+	claims := user.GetClaims(ctx)
+	if claims == nil {
+		http.Error(w, "Unauthorized", http.StatusUnauthorized)
+	}
+	log.Info().Msgf("Success Get Map Style for %s", vars["mapstyle"])
+
+	gmapApiKey := os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN")
+	sessionToken, err := s.GetSessionTokenDB(ctx, vars["mapstyle"])
+	if err != nil {
+		log.Err(err).Send()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	styleJsonFile, err := os.Open("style.json")
+	if err != nil {
+		log.Err(err).Send()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	defer styleJsonFile.Close()
+
+	jsonBytes, err := ioutil.ReadAll(styleJsonFile)
+	if err != nil {
+		log.Err(err).Send()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	var mapStyle MapStyle
+	err = json.Unmarshal(jsonBytes, &mapStyle)
+	if err != nil {
+		log.Err(err).Send()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	tileSource := mapStyle.Sources.RasterTiles.Tiles[0]
+	newTileSource := tileSource + fmt.Sprintf("?key=%s&session=%s", gmapApiKey, *sessionToken)
+
+	mapStyle.Sources.RasterTiles.Tiles[0] = newTileSource
+
+	log.Info().Msgf("Tile API %s", mapStyle.Sources.RasterTiles.Tiles[0])
+
+	mapStyleBytes, err := mapStyle.ToJsonBytes()
+	if err != nil {
+		log.Err(err).Send()
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
+
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+	w.Header().Set("Cache-Control", "public, max-age=31536000")
+	w.Write(mapStyleBytes)
+}
+
+
+func (s Server) GetSessionTokenDB(ctx context.Context, mapStyle string) (*string, error) {
+	sessionTokenRows, err := s.db.QueryContext(ctx,
+		`
+		select
+			session_token
+		from map_sessions
+		where map_style = $1
+		limit 1
+		`,
+		mapStyle,
+	)
+
+	if err != nil {
+		log.Err(err).Send()
+		return nil, err
+	}
+
+	defer sessionTokenRows.Close()
+	var sessionToken string
+	for sessionTokenRows.Next() {
+		err := sessionTokenRows.Scan(&sessionToken)
+		if err != nil {
+			log.Err(err).Send()
+			return nil, err
+		}
+	}
+
+	if sessionToken == "" {
+		err := fmt.Errorf("Session Token from map_style %s not found", mapStyle)
+		log.Warn().Err(err).Send()
+		return nil, err
+	}
+
+	return &sessionToken, nil
 }

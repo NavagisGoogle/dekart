@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux'
 import keplerGlReducer from '@dekart-xyz/kepler.gl/dist/reducers'
 import { ActionTypes as KeplerActionTypes } from '@dekart-xyz/kepler.gl/dist/actions'
-import { openReport, reportTitleChange, reportUpdate, saveMap, reportsListUpdate, unsubscribeReports, streamError, httpError, newReport, setEnv, forkReport, newForkedReport, downloading, finishDownloading, setActiveDataset, queryChanged, newRelease, querySource, uploadFile, uploadFileProgress, uploadFileStateChange, downloadDataset, createTileSession } from './actions'
+import { openReport, reportTitleChange, reportUpdate, saveMap, reportsListUpdate, unsubscribeReports, streamError, httpError, newReport, setEnv, forkReport, newForkedReport, downloading, finishDownloading, setActiveDataset, queryChanged, newRelease, querySource, uploadFile, uploadFileProgress, uploadFileStateChange, downloadDataset, createTileSessions } from './actions'
 import { Query } from '../proto/dekart_pb'
 
 const customKeplerGlReducer = keplerGlReducer.initialState({
@@ -10,25 +10,25 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
       streets2d: {
         id: 'streets2d',
         label: 'Street',
-        url: 'http://localhost:3000/styles/gmp-2d-streets.json',
+        url: 'http://localhost:8080/api/v1/style/gmp-2d-streets.json',
         icon: 'http://localhost:3000/logo192.png'
       },
       satellite: {
         id: 'satellite',
         label: 'Satellite',
-        url: 'http://localhost:3000/styles/gmp-satellite.json',
+        url: 'http://localhost:8080/api/v1/style/gmp-satellite.json',
         icon: 'http://localhost:3000/logo192.png'
       },
       terrain: {
         id: 'terrain',
         label: 'Terrain',
-        url: 'http://localhost:3000/styles/gmp-terrain.json',
+        url: 'http://localhost:8080/api/v1/style/gmp-terrain.json',
         icon: 'http://localhost:3000/logo192.png'
       },
       hybrid: {
         id: 'hybrid',
         label: 'Hybrid',
-        url: 'http://localhost:3000/styles/gmp-hybrid.json',
+        url: 'http://localhost:8080/api/v1/style/gmp-hybrid.json',
         icon: 'http://localhost:3000/logo192.png'
       },
 
@@ -358,10 +358,11 @@ function fileUploadStatus (state = {}, action) {
 const defaultGoogleMapsState = {sessionId: null, zoomLevel: 0, tileX: 0, tileY: 0}
 function googleMaps (state = defaultGoogleMapsState, action) {
   switch (action.type) {
-    case createTileSession.name:
+    case createTileSessions.name:
       return {
         ...state,
-        sessionId: action.sessionId
+        sessionId: action.sessionId,
+        sessionToken: action.sessionToken
       }
     default:
       return state
