@@ -4,6 +4,11 @@ import { ActionTypes as KeplerActionTypes } from '@dekart-xyz/kepler.gl/dist/act
 import { openReport, reportTitleChange, reportUpdate, saveMap, reportsListUpdate, unsubscribeReports, streamError, httpError, newReport, setEnv, forkReport, newForkedReport, downloading, finishDownloading, setActiveDataset, queryChanged, newRelease, querySource, uploadFile, uploadFileProgress, uploadFileStateChange, downloadDataset, createTileSessions } from './actions'
 import { Query } from '../proto/dekart_pb'
 
+
+/*const tile_API_URL = "https://www.googleapis.com/tile/v1/tiles/0/0/0?key="
+const { REACT_APP_GOOGLE_MAPS_TOKEN } = process.env
+const gmapAPIKey = { REACT_APP_GOOGLE_MAPS_TOKEN }
+*/
 const customKeplerGlReducer = keplerGlReducer.initialState({
   mapStyle: {
     mapStyles: {
@@ -11,25 +16,25 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
         id: 'streets2d',
         label: 'Street',
         url: 'http://localhost:8080/api/v1/style/gmp-2d-streets.json',
-        icon: 'http://localhost:3000/logo192.png'
+        icon: 'http://localhost:3000/gmp-2d-streets-z0.png'
       },
       satellite: {
         id: 'satellite',
         label: 'Satellite',
         url: 'http://localhost:8080/api/v1/style/gmp-satellite.json',
-        icon: 'http://localhost:3000/logo192.png'
+        icon: 'http://localhost:3000/gmp-satellite-z0.png'
       },
       terrain: {
         id: 'terrain',
         label: 'Terrain',
         url: 'http://localhost:8080/api/v1/style/gmp-terrain.json',
-        icon: 'http://localhost:3000/logo192.png'
+        icon: 'http://localhost:3000/gmp-terrain-z0.png'
       },
       hybrid: {
         id: 'hybrid',
         label: 'Hybrid',
         url: 'http://localhost:8080/api/v1/style/gmp-hybrid.json',
-        icon: 'http://localhost:3000/logo192.png'
+        icon: 'http://localhost:3000/gmp-hybrid-z0.png'
       },
 
     },
