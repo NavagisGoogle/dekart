@@ -12,11 +12,7 @@ const MAPSTYLES = {
 }
 
 export function createTileSessions () {
-    return (dispatch, getState) => {
-        const { keplerGl } = getState()
-        console.log(`Calling Create Tile Session`)
-        console.log(`Selected Style Type: ${ JSON.stringify(keplerGl) }`)
-        
+    return dispatch => {
         // temporary loop through four enums in protocol buffer MapType
         // will be refactored soon
         // best solution for this is the schedule the re-creation of session tokens once the token expiration is almost reached (through cloud scheduler or crontab)
