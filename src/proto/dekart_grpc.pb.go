@@ -39,7 +39,7 @@ type DekartClient interface {
 	GetEnv(ctx context.Context, in *GetEnvRequest, opts ...grpc.CallOption) (*GetEnvResponse, error)
 	// google maps
 	CreateTileSession(ctx context.Context, in *CreateTileSessionRequest, opts ...grpc.CallOption) (*CreateTileSessionResponse, error)
-	GetTile(ctx context.Context, in *GetTileRequest, opts ...grpc.CallOption) (*GetTileResponse, error)
+	GetSessionToken(ctx context.Context, in *GetSessionTokenRequest, opts ...grpc.CallOption) (*GetSessionTokenResponse, error)
 	// streams
 	GetReportStream(ctx context.Context, in *ReportStreamRequest, opts ...grpc.CallOption) (Dekart_GetReportStreamClient, error)
 	GetReportListStream(ctx context.Context, in *ReportListRequest, opts ...grpc.CallOption) (Dekart_GetReportListStreamClient, error)
@@ -161,9 +161,9 @@ func (c *dekartClient) CreateTileSession(ctx context.Context, in *CreateTileSess
 	return out, nil
 }
 
-func (c *dekartClient) GetTile(ctx context.Context, in *GetTileRequest, opts ...grpc.CallOption) (*GetTileResponse, error) {
-	out := new(GetTileResponse)
-	err := c.cc.Invoke(ctx, "/Dekart/GetTile", in, out, opts...)
+func (c *dekartClient) GetSessionToken(ctx context.Context, in *GetSessionTokenRequest, opts ...grpc.CallOption) (*GetSessionTokenResponse, error) {
+	out := new(GetSessionTokenResponse)
+	err := c.cc.Invoke(ctx, "/Dekart/GetSessionToken", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -255,7 +255,7 @@ type DekartServer interface {
 	GetEnv(context.Context, *GetEnvRequest) (*GetEnvResponse, error)
 	// google maps
 	CreateTileSession(context.Context, *CreateTileSessionRequest) (*CreateTileSessionResponse, error)
-	GetTile(context.Context, *GetTileRequest) (*GetTileResponse, error)
+	GetSessionToken(context.Context, *GetSessionTokenRequest) (*GetSessionTokenResponse, error)
 	// streams
 	GetReportStream(*ReportStreamRequest, Dekart_GetReportStreamServer) error
 	GetReportListStream(*ReportListRequest, Dekart_GetReportListStreamServer) error
@@ -302,8 +302,8 @@ func (UnimplementedDekartServer) GetEnv(context.Context, *GetEnvRequest) (*GetEn
 func (UnimplementedDekartServer) CreateTileSession(context.Context, *CreateTileSessionRequest) (*CreateTileSessionResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateTileSession not implemented")
 }
-func (UnimplementedDekartServer) GetTile(context.Context, *GetTileRequest) (*GetTileResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetTile not implemented")
+func (UnimplementedDekartServer) GetSessionToken(context.Context, *GetSessionTokenRequest) (*GetSessionTokenResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetSessionToken not implemented")
 }
 func (UnimplementedDekartServer) GetReportStream(*ReportStreamRequest, Dekart_GetReportStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetReportStream not implemented")
@@ -540,20 +540,20 @@ func _Dekart_CreateTileSession_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Dekart_GetTile_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(GetTileRequest)
+func _Dekart_GetSessionToken_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetSessionTokenRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(DekartServer).GetTile(ctx, in)
+		return srv.(DekartServer).GetSessionToken(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/Dekart/GetTile",
+		FullMethod: "/Dekart/GetSessionToken",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(DekartServer).GetTile(ctx, req.(*GetTileRequest))
+		return srv.(DekartServer).GetSessionToken(ctx, req.(*GetSessionTokenRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -656,8 +656,8 @@ var Dekart_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _Dekart_CreateTileSession_Handler,
 		},
 		{
-			MethodName: "GetTile",
-			Handler:    _Dekart_GetTile_Handler,
+			MethodName: "GetSessionToken",
+			Handler:    _Dekart_GetSessionToken_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

@@ -25,7 +25,7 @@ service Dekart {
 
     // google maps 
     rpc CreateTileSession(CreateTileSessionRequest) returns (CreateTileSessionResponse) {}
-    rpc GetTile(GetTileRequest) returns (GetTileResponse) {}
+    rpc GetSessionToken (GetSessionTokenRequest) returns (GetSessionTokenResponse) {}
 
     // streams
     rpc GetReportStream(ReportStreamRequest) returns (stream ReportStreamResponse) {}
@@ -56,6 +56,7 @@ message GetEnvResponse {
             TYPE_ALLOW_FILE_UPLOAD = 4;
             TYPE_DATASOURCE = 5;
             TYPE_STORAGE = 6;
+            TYPE_REACT_APP_GOOGLEMAPS_API_TOKEN=7;
         }
         Type type = 1;
         string value = 2;
@@ -225,7 +226,7 @@ message CreateReportResponse {
 
 message CreateTileSessionRequest {
     enum MapType {
-        maptyeNone = 0;
+        maptypeNone = 0;
         roadmap = 1;
         satellite = 2;
         terrain = 3;
@@ -237,28 +238,30 @@ message CreateTileSessionRequest {
         layerStreetview = 2;
         layerTraffic = 3;
     }
-    MapType mapType = 1;
+    MapType map_type = 1;
     string language = 2;
     string region = 3;
-    string imageFormat = 4;
-    repeated LayerType layerTypes = 5;
+    string image_format = 4;
+    repeated LayerType layer_types = 5;
     bool overlay = 6;
 }
 
 message CreateTileSessionResponse {
-    string sessionId = 1;
-    string expiry = 2;
-    int32 tileWidth = 3;
-    int32 tileHeight = 4;
+    string session_id = 1;
+    string session_token = 2;
+    string expiry = 3;
+    int32 tile_width = 4;
+    int32 tile_height = 5;
 }
 
-message GetTileRequest {
-    string sessionId = 1;
-    int32 zoomLevel = 2;
-    int32 tileX = 3;
-    int32 tileY = 4;
+message GetSessionTokenRequest {
+    string session_id = 1;
+}
+
+message GetSessionTokenResponse {
+    string session_token = 1;
 }
 
 message GetTileResponse {
-    bytes tileImage = 1;
+    bytes tile_image = 1;
 }

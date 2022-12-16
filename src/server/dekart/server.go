@@ -81,6 +81,10 @@ func (s Server) GetEnv(ctx context.Context, req *proto.GetEnvRequest) (*proto.Ge
 			Type:  proto.GetEnvResponse_Variable_TYPE_STORAGE,
 			Value: defaultString(os.Getenv("DEKART_STORAGE"), "GCS"),
 		},
+		{
+			Type:  proto.GetEnvResponse_Variable_TYPE_REACT_APP_GOOGLEMAPS_API_TOKEN,
+			Value: os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN"),
+		},
 	}
 	return &proto.GetEnvResponse{
 		Variables: variables,

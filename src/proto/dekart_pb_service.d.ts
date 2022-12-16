@@ -112,13 +112,13 @@ type DekartCreateTileSession = {
   readonly responseType: typeof proto_dekart_pb.CreateTileSessionResponse;
 };
 
-type DekartGetTile = {
+type DekartGetSessionToken = {
   readonly methodName: string;
   readonly service: typeof Dekart;
   readonly requestStream: false;
   readonly responseStream: false;
-  readonly requestType: typeof proto_dekart_pb.GetTileRequest;
-  readonly responseType: typeof proto_dekart_pb.GetTileResponse;
+  readonly requestType: typeof proto_dekart_pb.GetSessionTokenRequest;
+  readonly responseType: typeof proto_dekart_pb.GetSessionTokenResponse;
 };
 
 type DekartGetReportStream = {
@@ -153,7 +153,7 @@ export class Dekart {
   static readonly CancelQuery: DekartCancelQuery;
   static readonly GetEnv: DekartGetEnv;
   static readonly CreateTileSession: DekartCreateTileSession;
-  static readonly GetTile: DekartGetTile;
+  static readonly GetSessionToken: DekartGetSessionToken;
   static readonly GetReportStream: DekartGetReportStream;
   static readonly GetReportListStream: DekartGetReportListStream;
 }
@@ -298,14 +298,14 @@ export class DekartClient {
     requestMessage: proto_dekart_pb.CreateTileSessionRequest,
     callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.CreateTileSessionResponse|null) => void
   ): UnaryResponse;
-  getTile(
-    requestMessage: proto_dekart_pb.GetTileRequest,
+  getSessionToken(
+    requestMessage: proto_dekart_pb.GetSessionTokenRequest,
     metadata: grpc.Metadata,
-    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetTileResponse|null) => void
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetSessionTokenResponse|null) => void
   ): UnaryResponse;
-  getTile(
-    requestMessage: proto_dekart_pb.GetTileRequest,
-    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetTileResponse|null) => void
+  getSessionToken(
+    requestMessage: proto_dekart_pb.GetSessionTokenRequest,
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetSessionTokenResponse|null) => void
   ): UnaryResponse;
   getReportStream(requestMessage: proto_dekart_pb.ReportStreamRequest, metadata?: grpc.Metadata): ResponseStream<proto_dekart_pb.ReportStreamResponse>;
   getReportListStream(requestMessage: proto_dekart_pb.ReportListRequest, metadata?: grpc.Metadata): ResponseStream<proto_dekart_pb.ReportListResponse>;

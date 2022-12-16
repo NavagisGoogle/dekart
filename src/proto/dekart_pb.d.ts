@@ -131,6 +131,7 @@ export namespace GetEnvResponse {
       TYPE_ALLOW_FILE_UPLOAD: 4;
       TYPE_DATASOURCE: 5;
       TYPE_STORAGE: 6;
+      TYPE_REACT_APP_GOOGLEMAPS_API_TOKEN: 7;
     }
 
     export const Type: TypeMap;
@@ -842,8 +843,8 @@ export namespace CreateReportResponse {
 }
 
 export class CreateTileSessionRequest extends jspb.Message {
-  getMaptype(): CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap];
-  setMaptype(value: CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap]): void;
+  getMapType(): CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap];
+  setMapType(value: CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap]): void;
 
   getLanguage(): string;
   setLanguage(value: string): void;
@@ -851,13 +852,13 @@ export class CreateTileSessionRequest extends jspb.Message {
   getRegion(): string;
   setRegion(value: string): void;
 
-  getImageformat(): string;
-  setImageformat(value: string): void;
+  getImageFormat(): string;
+  setImageFormat(value: string): void;
 
-  clearLayertypesList(): void;
-  getLayertypesList(): Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>;
-  setLayertypesList(value: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>): void;
-  addLayertypes(value: CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap], index?: number): CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap];
+  clearLayerTypesList(): void;
+  getLayerTypesList(): Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>;
+  setLayerTypesList(value: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>): void;
+  addLayerTypes(value: CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap], index?: number): CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap];
 
   getOverlay(): boolean;
   setOverlay(value: boolean): void;
@@ -874,16 +875,16 @@ export class CreateTileSessionRequest extends jspb.Message {
 
 export namespace CreateTileSessionRequest {
   export type AsObject = {
-    maptype: CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap],
+    mapType: CreateTileSessionRequest.MapTypeMap[keyof CreateTileSessionRequest.MapTypeMap],
     language: string,
     region: string,
-    imageformat: string,
-    layertypesList: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>,
+    imageFormat: string,
+    layerTypesList: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>,
     overlay: boolean,
   }
 
   export interface MapTypeMap {
-    MAPTYENONE: 0;
+    MAPTYPENONE: 0;
     ROADMAP: 1;
     SATELLITE: 2;
     TERRAIN: 3;
@@ -903,17 +904,20 @@ export namespace CreateTileSessionRequest {
 }
 
 export class CreateTileSessionResponse extends jspb.Message {
-  getSessionid(): string;
-  setSessionid(value: string): void;
+  getSessionId(): string;
+  setSessionId(value: string): void;
+
+  getSessionToken(): string;
+  setSessionToken(value: string): void;
 
   getExpiry(): string;
   setExpiry(value: string): void;
 
-  getTilewidth(): number;
-  setTilewidth(value: number): void;
+  getTileWidth(): number;
+  setTileWidth(value: number): void;
 
-  getTileheight(): number;
-  setTileheight(value: number): void;
+  getTileHeight(): number;
+  setTileHeight(value: number): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateTileSessionResponse.AsObject;
@@ -927,50 +931,59 @@ export class CreateTileSessionResponse extends jspb.Message {
 
 export namespace CreateTileSessionResponse {
   export type AsObject = {
-    sessionid: string,
+    sessionId: string,
+    sessionToken: string,
     expiry: string,
-    tilewidth: number,
-    tileheight: number,
+    tileWidth: number,
+    tileHeight: number,
   }
 }
 
-export class GetTileRequest extends jspb.Message {
-  getSessionid(): string;
-  setSessionid(value: string): void;
-
-  getZoomlevel(): number;
-  setZoomlevel(value: number): void;
-
-  getTilex(): number;
-  setTilex(value: number): void;
-
-  getTiley(): number;
-  setTiley(value: number): void;
+export class GetSessionTokenRequest extends jspb.Message {
+  getSessionId(): string;
+  setSessionId(value: string): void;
 
   serializeBinary(): Uint8Array;
-  toObject(includeInstance?: boolean): GetTileRequest.AsObject;
-  static toObject(includeInstance: boolean, msg: GetTileRequest): GetTileRequest.AsObject;
+  toObject(includeInstance?: boolean): GetSessionTokenRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSessionTokenRequest): GetSessionTokenRequest.AsObject;
   static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
   static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
-  static serializeBinaryToWriter(message: GetTileRequest, writer: jspb.BinaryWriter): void;
-  static deserializeBinary(bytes: Uint8Array): GetTileRequest;
-  static deserializeBinaryFromReader(message: GetTileRequest, reader: jspb.BinaryReader): GetTileRequest;
+  static serializeBinaryToWriter(message: GetSessionTokenRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSessionTokenRequest;
+  static deserializeBinaryFromReader(message: GetSessionTokenRequest, reader: jspb.BinaryReader): GetSessionTokenRequest;
 }
 
-export namespace GetTileRequest {
+export namespace GetSessionTokenRequest {
   export type AsObject = {
-    sessionid: string,
-    zoomlevel: number,
-    tilex: number,
-    tiley: number,
+    sessionId: string,
+  }
+}
+
+export class GetSessionTokenResponse extends jspb.Message {
+  getSessionToken(): string;
+  setSessionToken(value: string): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetSessionTokenResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetSessionTokenResponse): GetSessionTokenResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetSessionTokenResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetSessionTokenResponse;
+  static deserializeBinaryFromReader(message: GetSessionTokenResponse, reader: jspb.BinaryReader): GetSessionTokenResponse;
+}
+
+export namespace GetSessionTokenResponse {
+  export type AsObject = {
+    sessionToken: string,
   }
 }
 
 export class GetTileResponse extends jspb.Message {
-  getTileimage(): Uint8Array | string;
-  getTileimage_asU8(): Uint8Array;
-  getTileimage_asB64(): string;
-  setTileimage(value: Uint8Array | string): void;
+  getTileImage(): Uint8Array | string;
+  getTileImage_asU8(): Uint8Array;
+  getTileImage_asB64(): string;
+  setTileImage(value: Uint8Array | string): void;
 
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): GetTileResponse.AsObject;
@@ -984,7 +997,7 @@ export class GetTileResponse extends jspb.Message {
 
 export namespace GetTileResponse {
   export type AsObject = {
-    tileimage: Uint8Array | string,
+    tileImage: Uint8Array | string,
   }
 }
 

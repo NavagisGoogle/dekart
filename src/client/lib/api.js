@@ -21,5 +21,5 @@ export async function call (method, endpoint, body) {
   return res
 }
 
-// export const post = call.bind(null, 'POST')
+export const post = call.bind(null, 'POST')
 export const get = call.bind(null, 'GET')

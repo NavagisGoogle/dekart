@@ -129,6 +129,48 @@ source export_variables.sh
 REACT_APP_API_HOST=http://192.168.1.189:8080
 ```
 
+### 4.1 Also change the urls for the mapStyles in the reducer.js
+```
+const customKeplerGlReducer = keplerGlReducer.initialState({
+  mapStyle: {
+    mapStyles: {
+      streets2d: {
+        id: 'streets2d',
+        label: 'Street',
+        url: 'http://<network-ip>:8080/api/v1/style/gmp-2d-streets.json',
+        icon: 'http://<network-ip>:3000/logo192.png'
+      },
+      satellite: {
+        id: 'satellite',
+        label: 'Satellite',
+        url: 'http://<network-ip>:8080/api/v1/style/gmp-satellite.json',
+        icon: 'http://<network-ip>:3000/logo192.png'
+      },
+      terrain: {
+        id: 'terrain',
+        label: 'Terrain',
+        url: 'http://<network-ip>:8080/api/v1/style/gmp-terrain.json',
+        icon: 'http://<network-ip>:3000/logo192.png'
+      },
+      hybrid: {
+        id: 'hybrid',
+        label: 'Hybrid',
+        url: 'http://<network-ip>:8080/api/v1/style/gmp-hybrid.json',
+        icon: 'http://<network-ip>:3000/logo192.png'
+      },
+
+    },
+    // Set initial map style
+    styleType: 'streets2d'
+  },
+  uiState: {
+    currentModal: null,
+    activeSidePanel: null
+  }
+})
+```
+This is only for development only. The localhost url will be retained during deployment
+
 ### 5. Setup Github [Personal Access Token](https://github.com/settings/tokens) so you are able to download @dekart-xyz/kepler.gl package
 
 ### 6. Generate a new classic token with *read:packages* privilege.

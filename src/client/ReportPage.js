@@ -6,7 +6,7 @@ import { KeplerGl } from '@dekart-xyz/kepler.gl/dist/components'
 import styles from './ReportPage.module.css'
 import { AutoSizer } from 'react-virtualized'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSession } from './actions'
+import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSessions } from './actions'
 import { EditOutlined, WarningFilled } from '@ant-design/icons'
 import { Query as QueryType } from '../proto/dekart_pb'
 import Tabs from 'antd/es/tabs'
@@ -200,6 +200,7 @@ class CatchKeplerError extends Component {
   }
 }
 
+
 function Kepler () {
   const env = useSelector(state => state.env)
   const dispatch = useDispatch()
@@ -210,6 +211,7 @@ function Kepler () {
       </div>
     )
   }
+
   return (
     <div className={styles.keplerFlex}>
       <div className={styles.keplerBlock}>
@@ -227,7 +229,6 @@ function Kepler () {
         </AutoSizer>
       </div>
     </div>
-
   )
 }
 
@@ -247,7 +248,7 @@ export default function ReportPage ({ edit }) {
 
   const [mapChanged, setMapChanged] = useState(false)
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => dispatch(createTileSession()), [])
+  useEffect(() => dispatch(createTileSessions()), [])
   useEffect(() => {
     // make sure kepler loaded before firing kepler actions
     if (!envLoaded) {

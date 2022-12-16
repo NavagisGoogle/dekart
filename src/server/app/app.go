@@ -99,6 +99,30 @@ func configureHTTP(dekartServer *dekart.Server) *mux.Router {
 		dekartServer.UploadFile(w, r)
 	}).Methods("POST", "OPTIONS")
 
+	api.HandleFunc("/check-expiry/{mapstyle}", func(w http.ResponseWriter, r * http.Request) {
+		setOriginHeader(w, r)
+		if r.Method == http.MethodOptions {
+			return
+		}
+		dekartServer.ServeCheckTokenExpiration(w, r)
+	}).Methods("GET", "OPTIONS")
+
+	api.HandleFunc("/update-mapstyle/{mapstyle}/{sessionid}", func(w http.ResponseWriter, r *http.Request) {
+		setOriginHeader(w, r)
+		if r.Method == http.MethodOptions {
+			return
+		}
+		dekartServer.UpdateMapStyle(w, r)
+	}).Methods("POST", "OPTION")
+
+	api.HandleFunc("/style/{mapstyle}.json", func(w http.ResponseWriter, r *http.Request) {
+		setOriginHeader(w, r)
+		if r.Method == http.MethodOptions {
+			return
+		}
+		dekartServer.ServeMapStyle(w, r)
+	}).Methods("GET", "OPTIONS")
+
 	staticPath := os.Getenv("DEKART_STATIC_FILES")
 
 	if staticPath != "" {
