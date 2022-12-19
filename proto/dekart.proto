@@ -244,6 +244,7 @@ message CreateTileSessionRequest {
     string image_format = 4;
     repeated LayerType layer_types = 5;
     bool overlay = 6;
+    repeated Style styles = 7;
 }
 
 message CreateTileSessionResponse {
@@ -253,6 +254,24 @@ message CreateTileSessionResponse {
     int32 tile_width = 4;
     int32 tile_height = 5;
 }
+
+message Style {
+    message Styler {
+        string hue = 1;
+        float lightness = 2;
+        float saturation = 3;
+        float gamma = 4;
+        bool invert_lightness = 5;
+        string visibility = 6;
+        string color = 7;
+        int32 weight = 8;
+    }
+
+    string feature_type = 1;
+    string element_type = 2;
+    repeated Styler stylers = 3;
+}
+
 
 message GetSessionTokenRequest {
     string session_id = 1;
