@@ -51,7 +51,6 @@ func (s Server) CreateTileSession(ctx context.Context, req *proto.CreateTileSess
 
 	log.Info().Msgf("Success API Call for maptype = %s", req.MapType)
 	fmt.Printf("\n")
-	fmt.Println(string(body))
 
 	bodyBytes := []byte(body)
 	var jsonResponse map[string]interface{}
@@ -118,17 +117,13 @@ func (s Server) ServeCheckTokenExpiration(w http.ResponseWriter, r *http.Request
 	if claims == nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 	}
-	log.Info().Msgf("Success Get Map Style for %s", vars["mapstyle"])
 
-	jsonResponse := fmt.Sprintf(`{
-		"hasNoSessionToken": false,
-		"sessionId": "2389289453",
-		"expired": true,
-		"expiry": "December 15, 2022"
-	}`)
+	jsonResponse, err := s.CheckTokenExpirationDB(ctx, vars["mapstyle"])
+
+	log.Info().Msgf("Success Check Style Expiration for %s: %s", vars["mapstyle"], *jsonResponse)
 
 	var tokenExpiration TokenExpiration
-	err := json.Unmarshal([]byte(jsonResponse), &tokenExpiration)
+	err = json.Unmarshal([]byte(*jsonResponse), &tokenExpiration)
 	if err != nil {
 		log.Err(err).Send()
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -143,6 +138,54 @@ func (s Server) ServeCheckTokenExpiration(w http.ResponseWriter, r *http.Request
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Cache-Control", "public, max-age=31536000")
 	w.Write(tokenExpirationBytes)
+}
+
+func (s Server) CheckTokenExpirationDB(ctx context.Context, mapStyle string) (*string, error) {
+	tokenExpiryRows, err := s.db.QueryContext(ctx,
+		`
+		select
+			session_id,
+			current_timestamp > expiration - interval '5 days' as expired,
+			expiration
+		from map_sessions
+		where map_style = $1
+		limit 1;
+		`,
+		mapStyle,
+	)
+
+	if err != nil {
+		log.Err(err).Send()
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+	defer tokenExpiryRows.Close()
+	var hasNoSessionToken bool
+	var sessionId string
+	var expired bool
+	var expiration string
+	for tokenExpiryRows.Next() {
+		err := tokenExpiryRows.Scan(&sessionId, &expired, &expiration)
+		if err != nil {
+			log.Err(err).Send()
+			return nil, status.Error(codes.Internal, err.Error())
+		}
+	}
+
+	if sessionId == "" {
+		hasNoSessionToken = true
+		expired = false
+	} else {
+		hasNoSessionToken = false
+	}
+
+	returnJson := fmt.Sprintf(`{
+		"hasNoSessionToken": %t,
+		"sessionId": "%s",
+		"expired": %t,
+		"expiry": "%s"
+	}`, hasNoSessionToken, sessionId, expired, expiration)
+
+	return &returnJson, nil
 }
 
 type RasterTiles struct {
@@ -270,6 +313,7 @@ func (s Server) GetSessionTokenDB(ctx context.Context, mapStyle string) (*string
 			session_token
 		from map_sessions
 		where map_style = $1
+		order by created_at desc
 		limit 1
 		`,
 		mapStyle,

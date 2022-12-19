@@ -863,6 +863,11 @@ export class CreateTileSessionRequest extends jspb.Message {
   getOverlay(): boolean;
   setOverlay(value: boolean): void;
 
+  clearStylesList(): void;
+  getStylesList(): Array<Style>;
+  setStylesList(value: Array<Style>): void;
+  addStyles(value?: Style, index?: number): Style;
+
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateTileSessionRequest.AsObject;
   static toObject(includeInstance: boolean, msg: CreateTileSessionRequest): CreateTileSessionRequest.AsObject;
@@ -881,6 +886,7 @@ export namespace CreateTileSessionRequest {
     imageFormat: string,
     layerTypesList: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>,
     overlay: boolean,
+    stylesList: Array<Style.AsObject>,
   }
 
   export interface MapTypeMap {
@@ -936,6 +942,84 @@ export namespace CreateTileSessionResponse {
     expiry: string,
     tileWidth: number,
     tileHeight: number,
+  }
+}
+
+export class Style extends jspb.Message {
+  getFeatureType(): string;
+  setFeatureType(value: string): void;
+
+  getElementType(): string;
+  setElementType(value: string): void;
+
+  clearStylersList(): void;
+  getStylersList(): Array<Style.Styler>;
+  setStylersList(value: Array<Style.Styler>): void;
+  addStylers(value?: Style.Styler, index?: number): Style.Styler;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): Style.AsObject;
+  static toObject(includeInstance: boolean, msg: Style): Style.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: Style, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): Style;
+  static deserializeBinaryFromReader(message: Style, reader: jspb.BinaryReader): Style;
+}
+
+export namespace Style {
+  export type AsObject = {
+    featureType: string,
+    elementType: string,
+    stylersList: Array<Style.Styler.AsObject>,
+  }
+
+  export class Styler extends jspb.Message {
+    getHue(): string;
+    setHue(value: string): void;
+
+    getLightness(): number;
+    setLightness(value: number): void;
+
+    getSaturation(): number;
+    setSaturation(value: number): void;
+
+    getGamma(): number;
+    setGamma(value: number): void;
+
+    getInvertLightness(): boolean;
+    setInvertLightness(value: boolean): void;
+
+    getVisibility(): string;
+    setVisibility(value: string): void;
+
+    getColor(): string;
+    setColor(value: string): void;
+
+    getWeight(): number;
+    setWeight(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): Styler.AsObject;
+    static toObject(includeInstance: boolean, msg: Styler): Styler.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: Styler, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): Styler;
+    static deserializeBinaryFromReader(message: Styler, reader: jspb.BinaryReader): Styler;
+  }
+
+  export namespace Styler {
+    export type AsObject = {
+      hue: string,
+      lightness: number,
+      saturation: number,
+      gamma: number,
+      invertLightness: boolean,
+      visibility: string,
+      color: string,
+      weight: number,
+    }
   }
 }
 
