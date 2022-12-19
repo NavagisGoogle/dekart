@@ -31,7 +31,18 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
         url: 'http://localhost:8080/api/v1/style/gmp-hybrid.json',
         icon: 'http://localhost:3000/logo192.png'
       },
-
+      light: {
+        id: 'light',
+        label: 'Light',
+        url: 'http://localhost:8080/api/v1/style/gmp-light.json',
+        icon: 'http://localhost:3000/logo192.png'
+      },
+      dark: {
+        id: 'dark',
+        label: 'Dark',
+        url: 'http://localhost:8080/api/v1/style/gmp-dark.json',
+        icon: 'http://localhost:3000/logo192.png'
+      }
     },
     // Set initial map style
     styleType: 'streets2d'
