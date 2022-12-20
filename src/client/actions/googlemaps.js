@@ -1,4 +1,4 @@
-import { CreateTileSessionRequest, GetSessionTokenRequest, Style } from '../../proto/dekart_pb'
+import { CreateTileSessionRequest, GetSessionTokenRequest, Style, GetAttributionRequest } from '../../proto/dekart_pb'
 import { lightTheme, darkTheme } from '../utils/themed-styles' 
 import { Dekart } from '../../proto/dekart_pb_service'
 import { unary } from '../lib/grpc'
@@ -89,6 +89,28 @@ export function getSessionToken () {
             const { sessionToken } = await unary(Dekart.GetSessionToken, req)
             console.log('Get Session Token Call was successful')
             console.log(sessionToken)
+        } catch (err) {
+            dispatch(error(err))
+            console.log(err)
+            return
+        }
+    }
+}
+
+
+export function getAttribution (zoomLevel, bounds, mapStyle) {
+    return async dispatch => {
+        console.log('Calling Get Attribution for viewport endpoint')
+        const req = new GetAttributionRequest()
+        req.setMapStyle(mapStyle)
+        req.setZoomLevel(zoomLevel)
+        req.setNorth(bounds.north)
+        req.setSouth(bounds.south)
+        req.setEast(bounds.east)
+        req.setWest(bounds.west)
+        try {
+            const { copyright } = await unary(Dekart.GetAttribution, req)
+            dispatch({type: getAttribution.name, copyright: copyright})
         } catch (err) {
             dispatch(error(err))
             console.log(err)
