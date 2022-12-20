@@ -8,6 +8,7 @@ service Dekart {
     rpc ForkReport(ForkReportRequest) returns (ForkReportResponse) {}
     rpc UpdateReport(UpdateReportRequest) returns (UpdateReportResponse) {}
     rpc ArchiveReport(ArchiveReportRequest) returns (ArchiveReportResponse) {}
+    rpc SetDiscoverable(SetDiscoverableRequest) returns (SetDiscoverableResponse) {}
 
     // datasets
     rpc CreateDataset(CreateDatasetRequest) returns (CreateDatasetResponse) {}
@@ -30,6 +31,14 @@ service Dekart {
     // streams
     rpc GetReportStream(ReportStreamRequest) returns (stream ReportStreamResponse) {}
     rpc GetReportListStream(ReportListRequest) returns (stream ReportListResponse) {}
+}
+
+message SetDiscoverableRequest {
+    string report_id = 1;
+    bool discoverable = 2;
+}
+
+message SetDiscoverableResponse {
 }
 
 message RemoveDatasetRequest {
@@ -57,6 +66,8 @@ message GetEnvResponse {
             TYPE_DATASOURCE = 5;
             TYPE_STORAGE = 6;
             TYPE_REACT_APP_GOOGLEMAPS_API_TOKEN=7;
+            TYPE_REQUIRE_AMAZON_OIDC = 8;
+            TYPE_REQUIRE_IAP = 9;
         }
         Type type = 1;
         string value = 2;
@@ -86,6 +97,8 @@ message Report {
     string title = 3;
     bool archived = 4;
     bool can_write = 5;
+    string author_email = 6;
+    bool discoverable = 7; // report is discoverable by other users of the same instance
 }
 
 message Dataset {

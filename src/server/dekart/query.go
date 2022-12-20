@@ -3,11 +3,12 @@ package dekart
 import (
 	"context"
 	"crypto/sha1"
+	"fmt"
+	"time"
+
 	"dekart/src/proto"
 	"dekart/src/server/job"
 	"dekart/src/server/user"
-	"fmt"
-	"time"
 
 	"github.com/google/uuid"
 	"github.com/rs/zerolog/log"
@@ -263,10 +264,14 @@ func (s Server) CancelQuery(ctx context.Context, req *proto.CancelQueryRequest) 
 		return nil, status.Errorf(codes.InvalidArgument, err.Error())
 	}
 	queriesRows, err := s.db.QueryContext(ctx,
-		`select
-			report_id
+		`select 
+			reports.id,
+			queries.query_source_id
 		from queries
-		where id=$1 and report_id in (select report_id from reports where author_email=$2) limit 1`,
+			left join datasets on queries.id = datasets.query_id
+			left join reports on (datasets.report_id = reports.id or queries.report_id = reports.id)
+		where queries.id = $1 and author_email = $2
+		limit 1`,
 		req.QueryId,
 		claims.Email,
 	)
@@ -284,6 +289,7 @@ func (s Server) CancelQuery(ctx context.Context, req *proto.CancelQueryRequest) 
 		}
 	}
 	if reportID == "" {
+		err := fmt.Errorf("query not found id:%s", req.QueryId)
 		log.Warn().Str("QueryId", req.QueryId).Msg("Query not found")
 		return nil, status.Error(codes.NotFound, err.Error())
 	}
