@@ -4,6 +4,11 @@ import { ActionTypes as KeplerActionTypes } from '@dekart-xyz/kepler.gl/dist/act
 import { openReport, reportTitleChange, reportUpdate, saveMap, reportsListUpdate, unsubscribeReports, streamError, httpError, newReport, setEnv, forkReport, newForkedReport, downloading, finishDownloading, setActiveDataset, queryChanged, newRelease, querySource, uploadFile, uploadFileProgress, uploadFileStateChange, downloadDataset, createTileSessions } from './actions'
 import { Query } from '../proto/dekart_pb'
 
+
+/*const tile_API_URL = "https://www.googleapis.com/tile/v1/tiles/0/0/0?key="
+const { REACT_APP_GOOGLE_MAPS_TOKEN } = process.env
+const gmapAPIKey = { REACT_APP_GOOGLE_MAPS_TOKEN }
+*/
 const customKeplerGlReducer = keplerGlReducer.initialState({
   mapStyle: {
     mapStyles: {

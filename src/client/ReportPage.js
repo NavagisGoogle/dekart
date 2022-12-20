@@ -18,6 +18,19 @@ import Downloading from './Downloading'
 import Dataset from './Dataset'
 import { Resizable } from 're-resizable'
 
+function AddGoogleAttribution() {
+  return(
+    <div className="google-attribution-container">
+      <div className="google-attribution-logo">
+        <img id="google-logo" src="http://localhost:3000/google_on_non_white.png" alt="Google Logo" />
+      </div>
+      <div className="google-attribution-text">
+        Map Data ©2022
+      </div>
+    </div>
+  )
+}
+
 function TabIcon ({ query }) {
   let iconColor = 'transparent'
   if (query.jobError) {
@@ -230,6 +243,7 @@ function Kepler () {
                 width={width}
                 height={height}
               />
+              <AddGoogleAttribution />
             </CatchKeplerError>
           )}
         </AutoSizer>

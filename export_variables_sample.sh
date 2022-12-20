@@ -9,7 +9,7 @@ export DEKART_PORT=
 export DEKART_DATASOURCE=
 export DEKART_STORAGE=
 export DEKART_CLOUD_STORAGE_BUCKET=
-export DEKART_GOOGLE_MAPS_TOKEN=
+export REACT_APP_GOOGLE_MAPS_TOKEN=
 
 # This varaible is not set for now since this will cause CORS related errors 
 # export DEKART_CORS_ORIGIN=Access-Control-Allow-Origin
