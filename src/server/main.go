@@ -3,12 +3,6 @@ package main
 import (
 	"context"
 	"database/sql"
-	"dekart/src/server/app"
-	"dekart/src/server/athenajob"
-	"dekart/src/server/bqjob"
-	"dekart/src/server/dekart"
-	"dekart/src/server/job"
-	"dekart/src/server/storage"
 	"fmt"
 	"math/rand"
 	"net/http"
@@ -18,21 +12,32 @@ import (
 	"syscall"
 	"time"
 
+	"dekart/src/server/app"
+	"dekart/src/server/athenajob"
+	"dekart/src/server/bqjob"
+	"dekart/src/server/dekart"
+	"dekart/src/server/job"
+	"dekart/src/server/storage"
 	"github.com/golang-migrate/migrate/v4"
 	"github.com/golang-migrate/migrate/v4/database/postgres"
 	_ "github.com/golang-migrate/migrate/v4/source/file"
 	_ "github.com/lib/pq"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/rs/zerolog/pkgerrors"
 )
 
 func configureLogger() {
 	rand.Seed(time.Now().UnixNano())
 	zerolog.TimeFieldFormat = zerolog.TimeFormatUnix
+	zerolog.ErrorStackFieldName = "stacktrace"
+	zerolog.ErrorStackMarshaler = pkgerrors.MarshalStack
 
 	pretty := os.Getenv("DEKART_LOG_PRETTY")
 	if pretty != "" {
 		log.Logger = log.Output(zerolog.ConsoleWriter{Out: os.Stdout, TimeFormat: time.RFC3339}).With().Caller().Logger()
+	} else {
+		log.Logger = log.Logger.With().Caller().Stack().Logger()
 	}
 
 	debug := os.Getenv("DEKART_LOG_DEBUG")
@@ -125,11 +130,11 @@ func startHttpServer(httpServer *http.Server) {
 	}
 }
 
-func waitForInterrupt() os.Signal {
+func waitForInterrupt() chan os.Signal {
 	var s = make(chan os.Signal, 1)
 	signal.Notify(s, syscall.SIGTERM)
 	signal.Notify(s, syscall.SIGINT)
-	return <-s
+	return s
 }
 
 func main() {
@@ -148,7 +153,7 @@ func main() {
 
 	go startHttpServer(httpServer)
 
-	sig := waitForInterrupt()
+	sig := <-waitForInterrupt()
 
 	// shutdown gracefully
 	log.Info().Str("signal", sig.String()).Msg("shutdown signal received")
@@ -170,6 +175,19 @@ func main() {
 		log.Debug().Msg("http server shutdown complete")
 	}()
 
-	wg.Wait()
-	log.Info().Msg("shutdown complete")
+	shutdown := make(chan bool)
+
+	go func() {
+		wg.Wait()
+		close(shutdown)
+	}()
+
+	select {
+	case <-shutdown:
+		log.Info().Msg("shutdown complete")
+		return
+	case <-waitForInterrupt():
+		log.Warn().Msg("shutdown forced")
+		return
+	}
 }

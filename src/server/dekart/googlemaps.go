@@ -262,7 +262,7 @@ func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	styleJsonFile, err := os.Open("styles/style-template.json")
+	styleJsonFile, err := os.Open("src/server/styles/style-template.json")
 	if err != nil {
 		log.Err(err).Send()
 		http.Error(w, err.Error(), http.StatusInternalServerError)

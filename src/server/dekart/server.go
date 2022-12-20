@@ -85,6 +85,14 @@ func (s Server) GetEnv(ctx context.Context, req *proto.GetEnvRequest) (*proto.Ge
 			Type:  proto.GetEnvResponse_Variable_TYPE_REACT_APP_GOOGLEMAPS_API_TOKEN,
 			Value: os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN"),
 		},
+		{
+			Type:  proto.GetEnvResponse_Variable_TYPE_REQUIRE_IAP,
+			Value: defaultString(os.Getenv("DEKART_REQUIRE_IAP"), ""),
+		},
+		{
+			Type:  proto.GetEnvResponse_Variable_TYPE_REQUIRE_AMAZON_OIDC,
+			Value: defaultString(os.Getenv("DEKART_REQUIRE_AMAZON_OIDC"), ""),
+		},
 	}
 	return &proto.GetEnvResponse{
 		Variables: variables,
