@@ -10,38 +10,38 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
       streets2d: {
         id: 'streets2d',
         label: 'Street',
-        url: 'http://localhost:8080/api/v1/style/gmp-2d-streets.json',
-        icon: 'http://localhost:3000/logo192.png'
+        url: '/api/v1/style/gmp-2d-streets.json',
+        icon: '/logo192.png'
       },
       satellite: {
         id: 'satellite',
         label: 'Satellite',
-        url: 'http://localhost:8080/api/v1/style/gmp-satellite.json',
-        icon: 'http://localhost:3000/logo192.png'
+        url: '/api/v1/style/gmp-satellite.json',
+        icon: '/logo192.png'
       },
       terrain: {
         id: 'terrain',
         label: 'Terrain',
-        url: 'http://localhost:8080/api/v1/style/gmp-terrain.json',
-        icon: 'http://localhost:3000/logo192.png'
+        url: '/api/v1/style/gmp-terrain.json',
+        icon: '/logo192.png'
       },
       hybrid: {
         id: 'hybrid',
         label: 'Hybrid',
-        url: 'http://localhost:8080/api/v1/style/gmp-hybrid.json',
-        icon: 'http://localhost:3000/logo192.png'
+        url: '/api/v1/style/gmp-hybrid.json',
+        icon: '/logo192.png'
       },
       light: {
         id: 'light',
         label: 'Light',
-        url: 'http://localhost:8080/api/v1/style/gmp-light.json',
-        icon: 'http://localhost:3000/logo192.png'
+        url: '/api/v1/style/gmp-light.json',
+        icon: '/logo192.png'
       },
       dark: {
         id: 'dark',
         label: 'Dark',
-        url: 'http://localhost:8080/api/v1/style/gmp-dark.json',
-        icon: 'http://localhost:3000/logo192.png'
+        url: '/api/v1/style/gmp-dark.json',
+        icon: '/logo192.png'
       }
     },
     // Set initial map style
