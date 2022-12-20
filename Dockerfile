@@ -3,10 +3,11 @@ WORKDIR /source
 ADD package.json .
 ADD package-lock.json .
 ADD .npmrc .
-RUN npm i --legacy-peer-deps
+# RUN npm i --legacy-peer-deps
 ADD public public
 ADD src src
-RUN npm run build
+ADD build build
+# RUN npm run build
 
 FROM golang:1.17 as gobuilder
 WORKDIR /source
