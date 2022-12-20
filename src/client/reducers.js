@@ -36,13 +36,13 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
         id: 'light',
         label: 'Light',
         url: '/api/v1/style/gmp-light.json',
-        icon: '/logo192.png'
+        icon: '/gmp-light-z0.png'
       },
       dark: {
         id: 'dark',
         label: 'Dark',
         url: '/api/v1/style/gmp-dark.json',
-        icon: '/logo192.png'
+        icon: '/gmp-dark-z0.png'
       }
     },
     // Set initial map style
