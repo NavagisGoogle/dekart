@@ -130,6 +130,15 @@ type DekartGetSessionToken = {
   readonly responseType: typeof proto_dekart_pb.GetSessionTokenResponse;
 };
 
+type DekartGetAttribution = {
+  readonly methodName: string;
+  readonly service: typeof Dekart;
+  readonly requestStream: false;
+  readonly responseStream: false;
+  readonly requestType: typeof proto_dekart_pb.GetAttributionRequest;
+  readonly responseType: typeof proto_dekart_pb.GetAttributionResponse;
+};
+
 type DekartGetReportStream = {
   readonly methodName: string;
   readonly service: typeof Dekart;
@@ -164,6 +173,7 @@ export class Dekart {
   static readonly GetEnv: DekartGetEnv;
   static readonly CreateTileSession: DekartCreateTileSession;
   static readonly GetSessionToken: DekartGetSessionToken;
+  static readonly GetAttribution: DekartGetAttribution;
   static readonly GetReportStream: DekartGetReportStream;
   static readonly GetReportListStream: DekartGetReportListStream;
 }
@@ -325,6 +335,15 @@ export class DekartClient {
   getSessionToken(
     requestMessage: proto_dekart_pb.GetSessionTokenRequest,
     callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetSessionTokenResponse|null) => void
+  ): UnaryResponse;
+  getAttribution(
+    requestMessage: proto_dekart_pb.GetAttributionRequest,
+    metadata: grpc.Metadata,
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetAttributionResponse|null) => void
+  ): UnaryResponse;
+  getAttribution(
+    requestMessage: proto_dekart_pb.GetAttributionRequest,
+    callback: (error: ServiceError|null, responseMessage: proto_dekart_pb.GetAttributionResponse|null) => void
   ): UnaryResponse;
   getReportStream(requestMessage: proto_dekart_pb.ReportStreamRequest, metadata?: grpc.Metadata): ResponseStream<proto_dekart_pb.ReportStreamResponse>;
   getReportListStream(requestMessage: proto_dekart_pb.ReportListRequest, metadata?: grpc.Metadata): ResponseStream<proto_dekart_pb.ReportListResponse>;
