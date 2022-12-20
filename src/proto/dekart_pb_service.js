@@ -136,6 +136,15 @@ Dekart.GetSessionToken = {
   responseType: proto_dekart_pb.GetSessionTokenResponse
 };
 
+Dekart.GetAttribution = {
+  methodName: "GetAttribution",
+  service: Dekart,
+  requestStream: false,
+  responseStream: false,
+  requestType: proto_dekart_pb.GetAttributionRequest,
+  responseType: proto_dekart_pb.GetAttributionResponse
+};
+
 Dekart.GetReportStream = {
   methodName: "GetReportStream",
   service: Dekart,
@@ -569,6 +578,37 @@ DekartClient.prototype.getSessionToken = function getSessionToken(requestMessage
     callback = arguments[1];
   }
   var client = grpc.unary(Dekart.GetSessionToken, {
+    request: requestMessage,
+    host: this.serviceHost,
+    metadata: metadata,
+    transport: this.options.transport,
+    debug: this.options.debug,
+    onEnd: function (response) {
+      if (callback) {
+        if (response.status !== grpc.Code.OK) {
+          var err = new Error(response.statusMessage);
+          err.code = response.status;
+          err.metadata = response.trailers;
+          callback(err, null);
+        } else {
+          callback(null, response.message);
+        }
+      }
+    }
+  });
+  return {
+    cancel: function () {
+      callback = null;
+      client.close();
+    }
+  };
+};
+
+DekartClient.prototype.getAttribution = function getAttribution(requestMessage, metadata, callback) {
+  if (arguments.length === 2) {
+    callback = arguments[1];
+  }
+  var client = grpc.unary(Dekart.GetAttribution, {
     request: requestMessage,
     host: this.serviceHost,
     metadata: metadata,

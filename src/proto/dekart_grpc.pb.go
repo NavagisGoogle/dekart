@@ -41,6 +41,7 @@ type DekartClient interface {
 	// google maps
 	CreateTileSession(ctx context.Context, in *CreateTileSessionRequest, opts ...grpc.CallOption) (*CreateTileSessionResponse, error)
 	GetSessionToken(ctx context.Context, in *GetSessionTokenRequest, opts ...grpc.CallOption) (*GetSessionTokenResponse, error)
+	GetAttribution(ctx context.Context, in *GetAttributionRequest, opts ...grpc.CallOption) (*GetAttributionResponse, error)
 	// streams
 	GetReportStream(ctx context.Context, in *ReportStreamRequest, opts ...grpc.CallOption) (Dekart_GetReportStreamClient, error)
 	GetReportListStream(ctx context.Context, in *ReportListRequest, opts ...grpc.CallOption) (Dekart_GetReportListStreamClient, error)
@@ -180,6 +181,15 @@ func (c *dekartClient) GetSessionToken(ctx context.Context, in *GetSessionTokenR
 	return out, nil
 }
 
+func (c *dekartClient) GetAttribution(ctx context.Context, in *GetAttributionRequest, opts ...grpc.CallOption) (*GetAttributionResponse, error) {
+	out := new(GetAttributionResponse)
+	err := c.cc.Invoke(ctx, "/Dekart/GetAttribution", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *dekartClient) GetReportStream(ctx context.Context, in *ReportStreamRequest, opts ...grpc.CallOption) (Dekart_GetReportStreamClient, error) {
 	stream, err := c.cc.NewStream(ctx, &Dekart_ServiceDesc.Streams[0], "/Dekart/GetReportStream", opts...)
 	if err != nil {
@@ -267,6 +277,7 @@ type DekartServer interface {
 	// google maps
 	CreateTileSession(context.Context, *CreateTileSessionRequest) (*CreateTileSessionResponse, error)
 	GetSessionToken(context.Context, *GetSessionTokenRequest) (*GetSessionTokenResponse, error)
+	GetAttribution(context.Context, *GetAttributionRequest) (*GetAttributionResponse, error)
 	// streams
 	GetReportStream(*ReportStreamRequest, Dekart_GetReportStreamServer) error
 	GetReportListStream(*ReportListRequest, Dekart_GetReportListStreamServer) error
@@ -318,6 +329,9 @@ func (UnimplementedDekartServer) CreateTileSession(context.Context, *CreateTileS
 }
 func (UnimplementedDekartServer) GetSessionToken(context.Context, *GetSessionTokenRequest) (*GetSessionTokenResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetSessionToken not implemented")
+}
+func (UnimplementedDekartServer) GetAttribution(context.Context, *GetAttributionRequest) (*GetAttributionResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetAttribution not implemented")
 }
 func (UnimplementedDekartServer) GetReportStream(*ReportStreamRequest, Dekart_GetReportStreamServer) error {
 	return status.Errorf(codes.Unimplemented, "method GetReportStream not implemented")
@@ -590,6 +604,24 @@ func _Dekart_GetSessionToken_Handler(srv interface{}, ctx context.Context, dec f
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Dekart_GetAttribution_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetAttributionRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DekartServer).GetAttribution(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/Dekart/GetAttribution",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DekartServer).GetAttribution(ctx, req.(*GetAttributionRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _Dekart_GetReportStream_Handler(srv interface{}, stream grpc.ServerStream) error {
 	m := new(ReportStreamRequest)
 	if err := stream.RecvMsg(m); err != nil {
@@ -694,6 +726,10 @@ var Dekart_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetSessionToken",
 			Handler:    _Dekart_GetSessionToken_Handler,
+		},
+		{
+			MethodName: "GetAttribution",
+			Handler:    _Dekart_GetAttribution_Handler,
 		},
 	},
 	Streams: []grpc.StreamDesc{

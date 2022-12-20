@@ -27,6 +27,7 @@ service Dekart {
     // google maps 
     rpc CreateTileSession(CreateTileSessionRequest) returns (CreateTileSessionResponse) {}
     rpc GetSessionToken (GetSessionTokenRequest) returns (GetSessionTokenResponse) {}
+    rpc GetAttribution (GetAttributionRequest) returns (GetAttributionResponse) {}
 
     // streams
     rpc GetReportStream(ReportStreamRequest) returns (stream ReportStreamResponse) {}
@@ -297,3 +298,25 @@ message GetSessionTokenResponse {
 message GetTileResponse {
     bytes tile_image = 1;
 }
+
+message GetAttributionRequest {
+    string map_style = 1;
+    int32 zoom_level = 2;
+    float north = 3;
+    float south = 4;
+    float east = 5;
+    float west = 6;
+}
+
+message GetAttributionResponse {
+    message MaxZoomRect {
+        int32 max_zoom = 1;
+        float north = 2;
+        float south = 3;
+        float east = 4;
+        float west = 5;
+    }
+    string copyright = 1;
+    repeated MaxZoomRect max_zoom_rects = 2;
+}
+

@@ -1,14 +1,10 @@
 import { combineReducers } from 'redux'
 import keplerGlReducer from '@dekart-xyz/kepler.gl/dist/reducers'
 import { ActionTypes as KeplerActionTypes } from '@dekart-xyz/kepler.gl/dist/actions'
-import { openReport, reportTitleChange, reportUpdate, saveMap, reportsListUpdate, unsubscribeReports, streamError, httpError, newReport, setEnv, forkReport, newForkedReport, downloading, finishDownloading, setActiveDataset, queryChanged, newRelease, querySource, uploadFile, uploadFileProgress, uploadFileStateChange, downloadDataset, createTileSessions } from './actions'
+import { openReport, reportTitleChange, reportUpdate, saveMap, reportsListUpdate, unsubscribeReports, streamError, httpError, newReport, setEnv, forkReport, newForkedReport, downloading, finishDownloading, setActiveDataset, queryChanged, newRelease, querySource, uploadFile, uploadFileProgress, uploadFileStateChange, downloadDataset, createTileSessions, getAttribution } from './actions'
 import { Query } from '../proto/dekart_pb'
 
 
-/*const tile_API_URL = "https://www.googleapis.com/tile/v1/tiles/0/0/0?key="
-const { REACT_APP_GOOGLE_MAPS_TOKEN } = process.env
-const gmapAPIKey = { REACT_APP_GOOGLE_MAPS_TOKEN }
-*/
 const customKeplerGlReducer = keplerGlReducer.initialState({
   mapStyle: {
     mapStyles: {
@@ -16,25 +12,25 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
         id: 'streets2d',
         label: 'Street',
         url: '/api/v1/style/gmp-2d-streets.json',
-        icon: '/logo192.png'
+        icon: '/gmp-2d-streets-z0.png'
       },
       satellite: {
         id: 'satellite',
         label: 'Satellite',
         url: '/api/v1/style/gmp-satellite.json',
-        icon: '/logo192.png'
+        icon: '/gmp-satellite-z0.png'
       },
       terrain: {
         id: 'terrain',
         label: 'Terrain',
         url: '/api/v1/style/gmp-terrain.json',
-        icon: '/logo192.png'
+        icon: '/gmp-terrain-z0.png'
       },
       hybrid: {
         id: 'hybrid',
         label: 'Hybrid',
         url: '/api/v1/style/gmp-hybrid.json',
-        icon: '/logo192.png'
+        icon: '/gmp-hybrid-z0.png'
       },
       light: {
         id: 'light',
@@ -375,7 +371,7 @@ function fileUploadStatus (state = {}, action) {
   }
 }
 
-const defaultGoogleMapsState = {sessionId: null, zoomLevel: 0, tileX: 0, tileY: 0}
+const defaultGoogleMapsState = {sessionId: null, zoomLevel: 0, tileX: 0, tileY: 0, copyright: "copyright placeholder"}
 function googleMaps (state = defaultGoogleMapsState, action) {
   switch (action.type) {
     case createTileSessions.name:
@@ -383,6 +379,11 @@ function googleMaps (state = defaultGoogleMapsState, action) {
         ...state,
         sessionId: action.sessionId,
         sessionToken: action.sessionToken
+      }
+    case getAttribution.name:
+      return {
+        ...state,
+        copyright: action.copyright
       }
     default:
       return state

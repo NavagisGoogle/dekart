@@ -1135,3 +1135,105 @@ export namespace GetTileResponse {
   }
 }
 
+export class GetAttributionRequest extends jspb.Message {
+  getMapStyle(): string;
+  setMapStyle(value: string): void;
+
+  getZoomLevel(): number;
+  setZoomLevel(value: number): void;
+
+  getNorth(): number;
+  setNorth(value: number): void;
+
+  getSouth(): number;
+  setSouth(value: number): void;
+
+  getEast(): number;
+  setEast(value: number): void;
+
+  getWest(): number;
+  setWest(value: number): void;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAttributionRequest.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAttributionRequest): GetAttributionRequest.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAttributionRequest, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAttributionRequest;
+  static deserializeBinaryFromReader(message: GetAttributionRequest, reader: jspb.BinaryReader): GetAttributionRequest;
+}
+
+export namespace GetAttributionRequest {
+  export type AsObject = {
+    mapStyle: string,
+    zoomLevel: number,
+    north: number,
+    south: number,
+    east: number,
+    west: number,
+  }
+}
+
+export class GetAttributionResponse extends jspb.Message {
+  getCopyright(): string;
+  setCopyright(value: string): void;
+
+  clearMaxZoomRectsList(): void;
+  getMaxZoomRectsList(): Array<GetAttributionResponse.MaxZoomRect>;
+  setMaxZoomRectsList(value: Array<GetAttributionResponse.MaxZoomRect>): void;
+  addMaxZoomRects(value?: GetAttributionResponse.MaxZoomRect, index?: number): GetAttributionResponse.MaxZoomRect;
+
+  serializeBinary(): Uint8Array;
+  toObject(includeInstance?: boolean): GetAttributionResponse.AsObject;
+  static toObject(includeInstance: boolean, msg: GetAttributionResponse): GetAttributionResponse.AsObject;
+  static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+  static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+  static serializeBinaryToWriter(message: GetAttributionResponse, writer: jspb.BinaryWriter): void;
+  static deserializeBinary(bytes: Uint8Array): GetAttributionResponse;
+  static deserializeBinaryFromReader(message: GetAttributionResponse, reader: jspb.BinaryReader): GetAttributionResponse;
+}
+
+export namespace GetAttributionResponse {
+  export type AsObject = {
+    copyright: string,
+    maxZoomRectsList: Array<GetAttributionResponse.MaxZoomRect.AsObject>,
+  }
+
+  export class MaxZoomRect extends jspb.Message {
+    getMaxZoom(): number;
+    setMaxZoom(value: number): void;
+
+    getNorth(): number;
+    setNorth(value: number): void;
+
+    getSouth(): number;
+    setSouth(value: number): void;
+
+    getEast(): number;
+    setEast(value: number): void;
+
+    getWest(): number;
+    setWest(value: number): void;
+
+    serializeBinary(): Uint8Array;
+    toObject(includeInstance?: boolean): MaxZoomRect.AsObject;
+    static toObject(includeInstance: boolean, msg: MaxZoomRect): MaxZoomRect.AsObject;
+    static extensions: {[key: number]: jspb.ExtensionFieldInfo<jspb.Message>};
+    static extensionsBinary: {[key: number]: jspb.ExtensionFieldBinaryInfo<jspb.Message>};
+    static serializeBinaryToWriter(message: MaxZoomRect, writer: jspb.BinaryWriter): void;
+    static deserializeBinary(bytes: Uint8Array): MaxZoomRect;
+    static deserializeBinaryFromReader(message: MaxZoomRect, reader: jspb.BinaryReader): MaxZoomRect;
+  }
+
+  export namespace MaxZoomRect {
+    export type AsObject = {
+      maxZoom: number,
+      north: number,
+      south: number,
+      east: number,
+      west: number,
+    }
+  }
+}
+

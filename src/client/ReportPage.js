@@ -6,7 +6,8 @@ import { KeplerGl } from '@dekart-xyz/kepler.gl/dist/components'
 import styles from './ReportPage.module.css'
 import { AutoSizer } from 'react-virtualized'
 import { useDispatch, useSelector } from 'react-redux'
-import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSessions } from './actions'
+import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSessions, getAttribution } from './actions'
+import { getViewportBounds } from './utils/mapfunctions'
 import { EditOutlined, WarningFilled } from '@ant-design/icons'
 import { Query as QueryType } from '../proto/dekart_pb'
 import Tabs from 'antd/es/tabs'
@@ -18,18 +19,6 @@ import Downloading from './Downloading'
 import Dataset from './Dataset'
 import { Resizable } from 're-resizable'
 
-function AddGoogleAttribution() {
-  return(
-    <div className="google-attribution-container">
-      <div className="google-attribution-logo">
-        <img id="google-logo" src="http://localhost:3000/google_on_non_white.png" alt="Google Logo" />
-      </div>
-      <div className="google-attribution-text">
-        Map Data ©2022
-      </div>
-    </div>
-  )
-}
 
 function TabIcon ({ query }) {
   let iconColor = 'transparent'
@@ -196,6 +185,20 @@ function Title () {
   }
 }
 
+function AddGoogleAttribution() {
+  const googleMaps = useSelector(state => state.googleMaps)
+  return(
+    <div className="google-attribution-container">
+      <div className="google-attribution-logo">
+        <img id="google-logo" src="/google_on_non_white.png" alt="Google Logo" />
+      </div>
+      <div className="google-attribution-text">
+        {googleMaps.copyright}
+      </div>
+    </div>
+  )
+}
+
 class CatchKeplerError extends Component {
   constructor (props) {
     super(props)
@@ -218,7 +221,6 @@ class CatchKeplerError extends Component {
     return this.props.children
   }
 }
-
 
 function Kepler () {
   const env = useSelector(state => state.env)
@@ -277,7 +279,17 @@ export default function ReportPage ({ edit }) {
     dispatch(openReport(id, edit))
     return () => dispatch(closeReport(id))
   }, [id, dispatch, edit, envLoaded])
-
+  useEffect(() => {
+    // This is to check for curreent zoom level and latlng of the center of the viewport
+    const interval = setInterval(() => {
+      const { mapState: {latitude, longitude, zoom, height, width }, mapStyle: { styleType }} = kepler
+      const latlng = {lat: latitude, lng: longitude}
+      const bounds = {h: height, w: width}
+      const viewportBounds = getViewportBounds(zoom, latlng, bounds)
+      dispatch(getAttribution(zoom, viewportBounds, styleType))
+    }, 5000)
+    return () => clearInterval(interval)
+  }, [kepler])
   useEffect(() => checkMapConfig(kepler, mapConfig, setMapChanged), [kepler, mapConfig, setMapChanged])
   const titleChanged = reportStatus.title && title && reportStatus.title !== title
 
