@@ -11,7 +11,7 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
       streets2d: {
         id: 'streets2d',
         label: 'Street',
-        url: '/api/v1/style/gmp-2d-streets.json',
+        url: '/api/v1/style/gmp-streets2d.json',
         icon: '/gmp-2d-streets-z0.png'
       },
       satellite: {
@@ -371,7 +371,7 @@ function fileUploadStatus (state = {}, action) {
   }
 }
 
-const defaultGoogleMapsState = {sessionId: null, zoomLevel: 0, tileX: 0, tileY: 0, copyright: "copyright placeholder"}
+const defaultGoogleMapsState = {sessionId: null, zoomLevel: 0, tileX: 0, tileY: 0, copyright: ""}
 function googleMaps (state = defaultGoogleMapsState, action) {
   switch (action.type) {
     case createTileSessions.name:

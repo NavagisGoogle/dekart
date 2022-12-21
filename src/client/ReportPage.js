@@ -269,8 +269,7 @@ export default function ReportPage ({ edit }) {
   const dispatch = useDispatch()
 
   const [mapChanged, setMapChanged] = useState(false)
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  useEffect(() => dispatch(createTileSessions()), [])
+  useEffect(() => dispatch(createTileSessions()), [dispatch])
   useEffect(() => {
     // make sure kepler loaded before firing kepler actions
     if (!envLoaded) {
@@ -283,15 +282,16 @@ export default function ReportPage ({ edit }) {
     // This is to check for curreent zoom level and latlng of the center of the viewport
     const interval = setInterval(() => {
       const { mapState: {latitude, longitude, zoom, height, width }, mapStyle: { styleType }} = kepler
+      const zoomLevel = Math.ceil(zoom)
       const latlng = {lat: latitude, lng: longitude}
       const bounds = {h: height, w: width}
-      const viewportBounds = getViewportBounds(zoom, latlng, bounds)
-      console.log(`Center lat lng = ${latitude}, ${longitude}, Zoom = ${zoom}, bounds = ${height}, ${width}`)
-      console.log(viewportBounds)
-      dispatch(getAttribution(zoom, viewportBounds, styleType))
-    }, 5000)
+      const viewportBounds = getViewportBounds(zoomLevel, latlng, bounds)
+      // console.log(`Center lat lng = ${latitude}, ${longitude}, Zoom = ${zoomLevel}, bounds = ${height}, ${width}`)
+      // console.log(viewportBounds)
+      dispatch(getAttribution(zoomLevel, viewportBounds, `gmp-${styleType}`))
+    }, 2000)
     return () => clearInterval(interval)
-  }, [kepler])
+  }, [kepler, dispatch])
   useEffect(() => checkMapConfig(kepler, mapConfig, setMapChanged), [kepler, mapConfig, setMapChanged])
   const titleChanged = reportStatus.title && title && reportStatus.title !== title
 

@@ -1,3 +1,5 @@
+import { memoize } from './memoizer'
+
 const TILE_SIZE = 256
 
 // This function is not accurate. We need to find a formula that converts CenterLatLng, ZoomLevel, and Bounds in Pixel
@@ -11,15 +13,17 @@ export function getViewportBounds(zoomLevel, centerLatLng, boundsHW) {
     }
 
     const boundingPixels = getBoundingPixels(pixelCoordinates, boundsHW, scale)
-    console.log(`PIXEL COORDINATES ${pixelCoordinates.x}, ${pixelCoordinates.y}`)
-    console.log(boundingPixels)
+    // console.log(`PIXEL COORDINATES ${pixelCoordinates.x}, ${pixelCoordinates.y}`)
+    // console.log(boundingPixels)
 
-    return {
+    const viewportCoordinates = {
         east: reverseMercatorLng(boundingPixels.maxX, scale),
         west: reverseMercatorLng(boundingPixels.minX, scale),
         south: reverseMercatorLat(boundingPixels.maxY, scale),
         north: reverseMercatorLat(boundingPixels.minY, scale)
     }
+
+    return viewportCoordinates
 }
 
 export function mercatorProject(latlng) {
@@ -32,12 +36,12 @@ export function mercatorProject(latlng) {
 }
 
 function getScale(zoomLevel) {
-    return 1 << Math.ceil(zoomLevel)
+    return 1 << zoomLevel
 }
 
 function getBoundingPixels(pixelCoordinates, boundsHW, scale) {
     const maxPixel = TILE_SIZE * scale
-    console.log(`Max Pixel = ${maxPixel}`)
+    // console.log(`Max Pixel = ${maxPixel}`)
     return {
         minX: boundPixelMin(pixelCoordinates.x, boundsHW.w),
         maxX: boundPixelMax(pixelCoordinates.x, boundsHW.w, maxPixel),
@@ -69,3 +73,6 @@ function reverseMercatorLat(y, scale) {
     const A = Math.exp((2 * Math.PI) - (4 * Math.PI * (y / scale) / TILE_SIZE))
     return (180 / Math.PI) * Math.asin((A - 1) / (A + 1))
 }
+
+
+getViewportBounds = memoize(getViewportBounds)

@@ -6,7 +6,7 @@ import { error} from './message'
 import { get, post } from '../lib/api'
 
 const MAPSTYLES = {
-    'gmp-2d-streets': 1,
+    'gmp-streets2d': 1,
     'gmp-hybrid': 2,
     'gmp-satellite': 2,
     'gmp-terrain': 3,
