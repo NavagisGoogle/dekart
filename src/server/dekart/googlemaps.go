@@ -102,6 +102,52 @@ func (s Server) InsertSession(ctx context.Context, sessionToken string, expiry s
 	return &id, nil
 }
 
+
+// Using the viewport endpoint in Google Tile API to determine viewport attributions
+func (s Server) GetAttribution(ctx context.Context, req *proto.GetAttributionRequest) (*proto.GetAttributionResponse, error) {
+	log.Info().Msg("Get Attribution was called")
+
+	gmapApiKey := os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN")
+	sessionToken, err := s.GetSessionTokenDB(ctx, req.MapStyle)
+	if err != nil {
+		fmt.Printf("Error getting session token from map style")
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	fullUrl := fmt.Sprintf(
+		"%s/viewport?session=%s&zoom=%d&north=%f&south=%f&east=%f&west=%f&key=%s",
+		GMAP_BASE_URL,
+		*sessionToken,
+		req.ZoomLevel,
+		req.North,
+		req.South,
+		req.East,
+		req.West,
+		gmapApiKey,
+	)
+	resp, err := http.Get(fullUrl)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	respBody, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		fmt.Printf("Error Reading response Body")
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	// fmt.Printf(string(respBody))
+
+	var respMessage proto.GetAttributionResponse
+	err = protojson.Unmarshal(respBody, &respMessage)
+	if err != nil {
+		fmt.Printf("Error converting respBody to a protomessage")
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &respMessage, nil
+}
+
 type TokenExpiration struct {
 	HasNoSessionToken bool `json:"hasNoSessionToken"`
 	SessionId string `json:"sessionId"`
@@ -277,6 +323,10 @@ func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	// During Production or Building in App Engine, uncomment the line below and comment out entire block from line "styleJsonFile"
+	// This is temporary workaround for reading the json file
+	//jsonBytes := []byte(`{"version":8,"sources":{"raster-tiles":{"type":"raster","tiles":["https://www.googleapis.com/tile/v1/tiles/{z}/{x}/{y}"],"tileSize":256,"attribution":"Map tiles by <a target=\"_top\" rel=\"noopener\" href=\"https://maps.google.com\">Google</a>"}},"layers":[{"id":"simple-tiles","type":"raster","source":"raster-tiles","minzoom":0,"maxzoom":22}]}`)
 
 	var mapStyle MapStyle
 	err = json.Unmarshal(jsonBytes, &mapStyle)

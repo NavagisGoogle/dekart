@@ -25,6 +25,7 @@
 
 # production
 /build
+app.yaml
 
 # dot env
 .env
