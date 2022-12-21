@@ -107,6 +107,7 @@ go version
 ## Note: Make sure you are in your working directory (e.g. `/var/www/...`) and also make sure you have appropriate access permissions for the repo
 ```
 git clone https://github.com/NavagisGoogle/dekart.git
+cd dekart
 ```
 
 ### 2. Copy the export_variables_sample.sh file to export_variables.sh
@@ -190,7 +191,6 @@ npm ci --legacy-peer-deps
 
 ### 9. Build the go lang server (This will install all the application dependencies)
 ```
-cd dekart
 go build ./src/server
 ```
 
