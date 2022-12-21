@@ -286,6 +286,8 @@ export default function ReportPage ({ edit }) {
       const latlng = {lat: latitude, lng: longitude}
       const bounds = {h: height, w: width}
       const viewportBounds = getViewportBounds(zoom, latlng, bounds)
+      console.log(`Center lat lng = ${latitude}, ${longitude}, Zoom = ${zoom}, bounds = ${height}, ${width}`)
+      console.log(viewportBounds)
       dispatch(getAttribution(zoom, viewportBounds, styleType))
     }, 5000)
     return () => clearInterval(interval)
