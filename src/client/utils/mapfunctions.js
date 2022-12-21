@@ -2,8 +2,6 @@ import { memoize } from './memoizer'
 
 const TILE_SIZE = 256
 
-// This function is not accurate. We need to find a formula that converts CenterLatLng, ZoomLevel, and Bounds in Pixel
-// to viewport bound coordinates (in degrees)
 export function getViewportBounds(zoomLevel, centerLatLng, boundsHW) {
     const worldCoordinates = mercatorProject(centerLatLng)
     const scale = getScale(zoomLevel)
