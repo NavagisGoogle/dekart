@@ -58,6 +58,15 @@ export const darkTheme = [
         ]
     },
     {
+        "featureType": "landscape.man_made",
+        "elementType": "geometry.stroke",
+        "stylers": [
+          {
+            "color": "#b8b7b7"
+          }
+        ]
+    },
+    {
         "featureType": "poi",
         "elementType": "geometry.fill",
         "stylers": [

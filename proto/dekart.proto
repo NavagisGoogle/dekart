@@ -265,8 +265,6 @@ message CreateTileSessionResponse {
     string session_id = 1;
     string session_token = 2;
     string expiry = 3;
-    int32 tile_width = 4;
-    int32 tile_height = 5;
 }
 
 message Style {
