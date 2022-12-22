@@ -63,7 +63,7 @@ export const lightTheme = [
         "elementType": "geometry.stroke",
         "stylers": [
           {
-            "color": "#6b6b6b"
+            "color": "#828282"
           }
         ]
     },

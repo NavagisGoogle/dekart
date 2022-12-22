@@ -5,6 +5,7 @@ import { useEffect, useState, Component } from 'react'
 import { KeplerGl } from '@dekart-xyz/kepler.gl/dist/components'
 import styles from './ReportPage.module.css'
 import { AutoSizer } from 'react-virtualized'
+import isEqual from 'lodash.isequal'
 import { useDispatch, useSelector } from 'react-redux'
 import { closeReport, openReport, reportTitleChange, setActiveDataset, error, createDataset, removeDataset, createTileSessions, getAttribution } from './actions'
 import { getViewportBounds } from './utils/mapfunctions'
@@ -258,7 +259,6 @@ function Kepler () {
 
 export default function ReportPage ({ edit }) {
   const { id } = useParams()
-
   const kepler = useSelector(state => state.keplerGl.kepler)
   const report = useSelector(state => state.report)
   const envLoaded = useSelector(state => state.env.loaded)
@@ -269,8 +269,8 @@ export default function ReportPage ({ edit }) {
   }, false))
 
   const dispatch = useDispatch()
-
   const [mapChanged, setMapChanged] = useState(false)
+  const [viewportState, setViewportState] = useState(null)
   useEffect(() => dispatch(createTileSessions()), [dispatch])
   useEffect(() => {
     // make sure kepler loaded before firing kepler actions
@@ -282,17 +282,27 @@ export default function ReportPage ({ edit }) {
   }, [id, dispatch, edit, envLoaded])
   useEffect(() => {
     // This is to check for curreent zoom level and latlng of the center of the viewport
-    const interval = setInterval(() => {
-      const { mapState: {latitude, longitude, zoom, height, width }, mapStyle: { styleType }} = kepler
-      const zoomLevel = Math.ceil(zoom)
-      const latlng = {lat: latitude, lng: longitude}
-      const bounds = {h: height, w: width}
-      const viewportBounds = getViewportBounds(zoomLevel, latlng, bounds)
-      // console.log(`Center lat lng = ${latitude}, ${longitude}, Zoom = ${zoomLevel}, bounds = ${height}, ${width}`)
-      // console.log(viewportBounds)
-      dispatch(getAttribution(zoomLevel, viewportBounds, `gmp-${styleType}`))
-    }, 2000)
-    return () => clearInterval(interval)
+    if (kepler) {
+      const {mapState: {latitude, longitude, zoom, height, width}, mapStyle: {styleType }} = kepler
+      const newViewportState = {
+        latitude: latitude,
+        longitude: longitude,
+        zoom: zoom,
+        height: height,
+        width: width,
+        styleType: styleType
+      }
+      if (!isEqual(viewportState, newViewportState)) {
+        setViewportState(newViewportState)
+        const zoomLevel = Math.ceil(zoom)
+        const latlng = {lat: latitude, lng: longitude}
+        const bounds = {h: height, w: width}
+        const viewportBounds = getViewportBounds(zoomLevel, latlng, bounds)
+        // console.log(`Center lat lng = ${latitude}, ${longitude}, Zoom = ${zoomLevel}, bounds = ${height}, ${width}`)
+        // console.log(viewportBounds)
+        dispatch(getAttribution(zoomLevel, viewportBounds, `gmp-${styleType}`))
+      }
+    }
   }, [kepler, dispatch])
   useEffect(() => checkMapConfig(kepler, mapConfig, setMapChanged), [kepler, mapConfig, setMapChanged])
   const titleChanged = reportStatus.title && title && reportStatus.title !== title

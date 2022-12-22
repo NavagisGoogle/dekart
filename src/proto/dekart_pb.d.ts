@@ -910,6 +910,12 @@ export class CreateTileSessionRequest extends jspb.Message {
   setLayerTypesList(value: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>): void;
   addLayerTypes(value: CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap], index?: number): CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap];
 
+  getScale(): string;
+  setScale(value: string): void;
+
+  getHighDpi(): boolean;
+  setHighDpi(value: boolean): void;
+
   getOverlay(): boolean;
   setOverlay(value: boolean): void;
 
@@ -935,6 +941,8 @@ export namespace CreateTileSessionRequest {
     region: string,
     imageFormat: string,
     layerTypesList: Array<CreateTileSessionRequest.LayerTypeMap[keyof CreateTileSessionRequest.LayerTypeMap]>,
+    scale: string,
+    highDpi: boolean,
     overlay: boolean,
     stylesList: Array<Style.AsObject>,
   }

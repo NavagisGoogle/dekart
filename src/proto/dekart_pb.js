@@ -6844,7 +6844,7 @@ proto.CreateReportResponse.prototype.hasReport = function() {
  * @private {!Array<number>}
  * @const
  */
-proto.CreateTileSessionRequest.repeatedFields_ = [5,7];
+proto.CreateTileSessionRequest.repeatedFields_ = [5,9];
 
 
 
@@ -6882,7 +6882,9 @@ proto.CreateTileSessionRequest.toObject = function(includeInstance, msg) {
     region: jspb.Message.getFieldWithDefault(msg, 3, ""),
     imageFormat: jspb.Message.getFieldWithDefault(msg, 4, ""),
     layerTypesList: (f = jspb.Message.getRepeatedField(msg, 5)) == null ? undefined : f,
-    overlay: jspb.Message.getBooleanFieldWithDefault(msg, 6, false),
+    scale: jspb.Message.getFieldWithDefault(msg, 6, ""),
+    highDpi: jspb.Message.getBooleanFieldWithDefault(msg, 7, false),
+    overlay: jspb.Message.getBooleanFieldWithDefault(msg, 8, false),
     stylesList: jspb.Message.toObjectList(msg.getStylesList(),
     proto.Style.toObject, includeInstance)
   };
@@ -6944,10 +6946,18 @@ proto.CreateTileSessionRequest.deserializeBinaryFromReader = function(msg, reade
       }
       break;
     case 6:
+      var value = /** @type {string} */ (reader.readString());
+      msg.setScale(value);
+      break;
+    case 7:
+      var value = /** @type {boolean} */ (reader.readBool());
+      msg.setHighDpi(value);
+      break;
+    case 8:
       var value = /** @type {boolean} */ (reader.readBool());
       msg.setOverlay(value);
       break;
-    case 7:
+    case 9:
       var value = new proto.Style;
       reader.readMessage(value,proto.Style.deserializeBinaryFromReader);
       msg.addStyles(value);
@@ -7016,17 +7026,31 @@ proto.CreateTileSessionRequest.serializeBinaryToWriter = function(message, write
       f
     );
   }
+  f = message.getScale();
+  if (f.length > 0) {
+    writer.writeString(
+      6,
+      f
+    );
+  }
+  f = message.getHighDpi();
+  if (f) {
+    writer.writeBool(
+      7,
+      f
+    );
+  }
   f = message.getOverlay();
   if (f) {
     writer.writeBool(
-      6,
+      8,
       f
     );
   }
   f = message.getStylesList();
   if (f.length > 0) {
     writer.writeRepeatedMessage(
-      7,
+      9,
       f,
       proto.Style.serializeBinaryToWriter
     );
@@ -7165,11 +7189,47 @@ proto.CreateTileSessionRequest.prototype.clearLayerTypesList = function() {
 
 
 /**
- * optional bool overlay = 6;
+ * optional string scale = 6;
+ * @return {string}
+ */
+proto.CreateTileSessionRequest.prototype.getScale = function() {
+  return /** @type {string} */ (jspb.Message.getFieldWithDefault(this, 6, ""));
+};
+
+
+/**
+ * @param {string} value
+ * @return {!proto.CreateTileSessionRequest} returns this
+ */
+proto.CreateTileSessionRequest.prototype.setScale = function(value) {
+  return jspb.Message.setProto3StringField(this, 6, value);
+};
+
+
+/**
+ * optional bool high_dpi = 7;
+ * @return {boolean}
+ */
+proto.CreateTileSessionRequest.prototype.getHighDpi = function() {
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 7, false));
+};
+
+
+/**
+ * @param {boolean} value
+ * @return {!proto.CreateTileSessionRequest} returns this
+ */
+proto.CreateTileSessionRequest.prototype.setHighDpi = function(value) {
+  return jspb.Message.setProto3BooleanField(this, 7, value);
+};
+
+
+/**
+ * optional bool overlay = 8;
  * @return {boolean}
  */
 proto.CreateTileSessionRequest.prototype.getOverlay = function() {
-  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 6, false));
+  return /** @type {boolean} */ (jspb.Message.getBooleanFieldWithDefault(this, 8, false));
 };
 
 
@@ -7178,17 +7238,17 @@ proto.CreateTileSessionRequest.prototype.getOverlay = function() {
  * @return {!proto.CreateTileSessionRequest} returns this
  */
 proto.CreateTileSessionRequest.prototype.setOverlay = function(value) {
-  return jspb.Message.setProto3BooleanField(this, 6, value);
+  return jspb.Message.setProto3BooleanField(this, 8, value);
 };
 
 
 /**
- * repeated Style styles = 7;
+ * repeated Style styles = 9;
  * @return {!Array<!proto.Style>}
  */
 proto.CreateTileSessionRequest.prototype.getStylesList = function() {
   return /** @type{!Array<!proto.Style>} */ (
-    jspb.Message.getRepeatedWrapperField(this, proto.Style, 7));
+    jspb.Message.getRepeatedWrapperField(this, proto.Style, 9));
 };
 
 
@@ -7197,7 +7257,7 @@ proto.CreateTileSessionRequest.prototype.getStylesList = function() {
  * @return {!proto.CreateTileSessionRequest} returns this
 */
 proto.CreateTileSessionRequest.prototype.setStylesList = function(value) {
-  return jspb.Message.setRepeatedWrapperField(this, 7, value);
+  return jspb.Message.setRepeatedWrapperField(this, 9, value);
 };
 
 
@@ -7207,7 +7267,7 @@ proto.CreateTileSessionRequest.prototype.setStylesList = function(value) {
  * @return {!proto.Style}
  */
 proto.CreateTileSessionRequest.prototype.addStyles = function(opt_value, opt_index) {
-  return jspb.Message.addToRepeatedWrapperField(this, 7, opt_value, proto.Style, opt_index);
+  return jspb.Message.addToRepeatedWrapperField(this, 9, opt_value, proto.Style, opt_index);
 };
 
 
