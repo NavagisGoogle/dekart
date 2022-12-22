@@ -11,37 +11,37 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
       streets2d: {
         id: 'streets2d',
         label: 'Street',
-        url: '/api/v1/style/gmp-streets2d.json',
+        url: '/api/v1/style/streets2d.json',
         icon: '/gmp-2d-streets-z0.png'
       },
       satellite: {
         id: 'satellite',
         label: 'Satellite',
-        url: '/api/v1/style/gmp-satellite.json',
+        url: '/api/v1/style/satellite.json',
         icon: '/gmp-satellite-z0.png'
       },
       terrain: {
         id: 'terrain',
         label: 'Terrain',
-        url: '/api/v1/style/gmp-terrain.json',
+        url: '/api/v1/style/terrain.json',
         icon: '/gmp-terrain-z0.png'
       },
       hybrid: {
         id: 'hybrid',
         label: 'Hybrid',
-        url: '/api/v1/style/gmp-hybrid.json',
+        url: '/api/v1/style/hybrid.json',
         icon: '/gmp-hybrid-z0.png'
       },
       light: {
         id: 'light',
         label: 'Light',
-        url: '/api/v1/style/gmp-light.json',
+        url: '/api/v1/style/light.json',
         icon: '/gmp-light-z0.png'
       },
       dark: {
         id: 'dark',
         label: 'Dark',
-        url: '/api/v1/style/gmp-dark.json',
+        url: '/api/v1/style/dark.json',
         icon: '/gmp-dark-z0.png'
       }
     },
