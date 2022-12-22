@@ -156,19 +156,29 @@
 }
 
 .keplerBlock :global .google-attribution-logo {
-    bottom: 0;
-    left: 5px;
+    bottom: 10px;
+    left: 10px;
     position: absolute;
 }
 
-.keplerBlock :global .google-attribution-text {
-    bottom: 0;
-    right: 5px;
+.keplerBlock :global .google-attribution-container {
     position: absolute;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+}
+
+.keplerBlock :global .google-attribution-text {
+    float: right;
+    background-color: rgb(241,243,244);
+    padding-left: 3px;
+    display: table-row;
     font-size: 10px;
     color: rgb(60,64,67);
-    font-family: Roboto, Arial, sans-serif;
-    background-color: rgb(241,243,244);
+}
+
+.keplerBlock :global .google-attribution-innerText {
+    display: table-cell;
 }
 
 .readOnly span {
