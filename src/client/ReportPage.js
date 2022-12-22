@@ -188,16 +188,23 @@ function Title () {
 }
 
 function AddGoogleAttribution() {
+  const kepler = useSelector(state => state.keplerGl.kepler)
   const googleMaps = useSelector(state => state.googleMaps)
+  const [ useColoredLogo, toggleUseColoredLogo ] = useState(true)
+  useEffect(() => {
+    if (kepler) {
+      const { mapStyle : { styleType }} = kepler
+      styleType === 'dark' || styleType === 'light' ? toggleUseColoredLogo(true) : toggleUseColoredLogo(false)
+    }
+  }, [kepler])
+  const imgFile = useColoredLogo ? 'google_on_white.png' : 'google_on_non_white.png'
   return(
     <div className="google-attribution-container">
       <div className="google-attribution-logo">
-        <img id="google-logo" src="/google_on_non_white.png" alt="Google Logo" />
+        <img id="google-logo" src={`/${imgFile}`} alt="Google Logo" />
       </div>
-      <div className="google-attribution-container">
-        <div className="google-attribution-text">
-          <div className="google-attribution-innerText">{googleMaps.copyright}</div>
-        </div>
+      <div className="google-attribution-text">
+        <div className="google-attribution-innerText">{googleMaps.copyright}</div>
       </div>
     </div>
   )

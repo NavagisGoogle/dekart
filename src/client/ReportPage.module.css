@@ -161,14 +161,10 @@
     position: absolute;
 }
 
-.keplerBlock :global .google-attribution-container {
+.keplerBlock :global .google-attribution-text {
     position: absolute;
     right: 0;
     bottom: 0;
-    z-index: 3;
-}
-
-.keplerBlock :global .google-attribution-text {
     float: right;
     background-color: rgb(241,243,244);
     padding-left: 3px;
