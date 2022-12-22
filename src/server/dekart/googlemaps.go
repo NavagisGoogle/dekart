@@ -204,7 +204,6 @@ func (s Server) ServeCheckTokenExpiration(w http.ResponseWriter, r *http.Request
 		return
 	}
 	w.Header().Set("Content-Type", "application/json")
-	w.Header().Set("Cache-Control", "public, max-age=31536000")
 	w.Write(tokenExpirationBytes)
 }
 
@@ -348,7 +347,7 @@ func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
 
 	// During Production or Building in App Engine, uncomment the line below and comment out entire block from line "styleJsonFile"
 	// This is temporary workaround for reading the json file
-	//jsonBytes := []byte(`{"version":8,"sources":{"raster-tiles":{"type":"raster","tiles":["https://www.googleapis.com/tile/v1/tiles/{z}/{x}/{y}"],"tileSize":256,"attribution":"Map tiles by <a target=\"_top\" rel=\"noopener\" href=\"https://maps.google.com\">Google</a>"}},"layers":[{"id":"simple-tiles","type":"raster","source":"raster-tiles","minzoom":0,"maxzoom":22}]}`)
+	// sonBytes := []byte(`{"version":8,"sources":{"raster-tiles":{"type":"raster","tiles":["https://www.googleapis.com/tile/v1/tiles/{z}/{x}/{y}"],"tileSize":256,"attribution":"Map tiles by <a target=\"_top\" rel=\"noopener\" href=\"https://maps.google.com\">Google</a>"}},"layers":[{"id":"simple-tiles","type":"raster","source":"raster-tiles","minzoom":0,"maxzoom":22}]}`)
 
 	var mapStyle MapStyle
 	err = json.Unmarshal(jsonBytes, &mapStyle)
@@ -373,7 +372,6 @@ func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
-	w.Header().Set("Cache-Control", "public, max-age=31536000")
 	w.Write(mapStyleBytes)
 }
 

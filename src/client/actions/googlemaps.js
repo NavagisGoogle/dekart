@@ -103,7 +103,6 @@ export function getSessionToken () {
 
 export function getAttribution (zoomLevel, bounds, mapStyle) {
     return async dispatch => {
-        console.log('Calling Get Attribution for viewport endpoint')
         const req = new GetAttributionRequest()
         req.setMapStyle(mapStyle)
         req.setZoomLevel(zoomLevel)

@@ -185,18 +185,13 @@
     outline: none;
     border: none;
     padding: 0px;
-    opacity: 20%;
+    opacity: 0.2;
     transition: opacity 0.3s, transform 0.3s, top 0.3s, bottom 0.3s, left 0.3s, right 0.3s;
 }
 
 .keplerBlock :global .tilt-and-rotation-container button:hover {
-    opacity: 100%;
+    opacity: 1;
     transform: scale(1.2);
-}
-
-.keplerBlock :global .tilt-and-rotation-container button:not(:hover) {
-    opacity: 20%;
-    transform: scale(1.0);
 }
 
 .keplerBlock :global .tilt-and-rotation-container img {
