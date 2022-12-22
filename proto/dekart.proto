@@ -257,8 +257,10 @@ message CreateTileSessionRequest {
     string region = 3;
     string image_format = 4;
     repeated LayerType layer_types = 5;
-    bool overlay = 6;
-    repeated Style styles = 7;
+    string scale = 6;
+    bool high_dpi = 7;
+    bool overlay = 8;
+    repeated Style styles = 9;
 }
 
 message CreateTileSessionResponse {

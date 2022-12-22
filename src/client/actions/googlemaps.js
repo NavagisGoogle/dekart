@@ -31,6 +31,8 @@ export function createTileSessions () {
                     req.setLanguage('en-US')
                     req.setRegion('us')
                     req.setImageFormat('png')
+                    req.setScale('scaleFactor2x')
+                    req.setHighDpi(true)
                     req.setOverlay(false)
                     if (mapstyle === 'gmp-hybrid' || mapstyle === 'gmp-terrain') req.setLayerTypesList([1])
                     if (mapstyle === 'gmp-light') req = setStyleTheme(req, lightTheme)
