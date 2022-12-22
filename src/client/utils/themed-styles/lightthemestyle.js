@@ -59,6 +59,15 @@ export const lightTheme = [
         ]
     },
     {
+        "featureType": "landscape.man_made",
+        "elementType": "geometry.stroke",
+        "stylers": [
+          {
+            "color": "#6b6b6b"
+          }
+        ]
+    },
+    {
         "featureType": "landscape.natural.terrain",
         "elementType": "geometry",
         "stylers": [

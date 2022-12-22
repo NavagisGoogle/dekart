@@ -33,73 +33,95 @@ func (s Server) CreateTileSession(ctx context.Context, req *proto.CreateTileSess
 		fmt.Printf("Could not marshal message")
 		return nil, status.Error(codes.Internal, err.Error())
 	}
-	fmt.Printf("json data: %s, type: %T\n", requestBodyJson, requestBodyJson)
-
-	gmapApiKey := os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN")
-	fullUrl := fmt.Sprintf("%s/createSession?key=%s", GMAP_BASE_URL, gmapApiKey)
-	resp, err := http.Post(fullUrl, "application/json", bytes.NewBuffer(requestBodyJson))
-	if err != nil {
-		return nil, status.Error(codes.Internal, err.Error())
-	}
+	requestBodyJsonString := string(requestBodyJson)
 	
-	defer resp.Body.Close()
-
-	body, err := ioutil.ReadAll(resp.Body)
+	id, err := s.InsertTileInput(ctx, requestBodyJsonString)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	log.Info().Msgf("Success API Call for maptype = %s", req.MapType)
-	fmt.Printf("\n")
-
-	bodyBytes := []byte(body)
-	var jsonResponse map[string]interface{}
-	err = json.Unmarshal(bodyBytes, &jsonResponse)
+	sessionToken, expiry, err := s.GenerateSessionToken(ctx, requestBodyJson)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
 
-	sessionToken := jsonResponse["session"].(string)
-	expiry := jsonResponse["expiry"].(string)
-
-	sessionId, err := s.InsertSession(ctx, sessionToken, expiry)
+	err = s.UpdateSession(ctx, *id, *sessionToken, *expiry)
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
-
-	tileWidth  := int32(jsonResponse["tileWidth"].(float64))
-	tileHeight := int32(jsonResponse["tileHeight"].(float64))
 
 	return  &proto.CreateTileSessionResponse {
-		SessionId: *sessionId,
-		SessionToken: sessionToken,
-		Expiry: expiry,
-		TileWidth: tileWidth,
-		TileHeight: tileHeight,
+		SessionId: *id,
+		SessionToken: *sessionToken,
+		Expiry: *expiry,
 	}, nil
 }
 
-
-func (s Server) InsertSession(ctx context.Context, sessionToken string, expiry string) (*string, error) {
+func (s Server) InsertTileInput(ctx context.Context, tileInput string ) (*string, error) {
 	id := uuid.GetUUID()
-	expiryInt, err := strconv.ParseInt(expiry, 10, 64)
-	if err != nil {
-		return nil, err
-	}
-
-	tm := time.Unix(expiryInt, 0)
-
-	_, err = s.db.ExecContext(ctx,
-		"insert into map_sessions (session_id, expiration, session_token) values ($1, $2, $3)",
+	_, err := s.db.ExecContext(ctx,
+		"insert into map_sessions (session_id, tile_input) values ($1, $2)",
 		id,
-		tm,
-		sessionToken,
+		tileInput,
 	)
 	if err != nil {
 		log.Err(err).Send()
 		return nil, err
 	}
 	return &id, nil
+}
+
+func (s Server) GenerateSessionToken(ctx context.Context, tileBodyBytes []byte) (*string, *string, error) {
+	gmapApiKey := os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN")
+	fullUrl := fmt.Sprintf("%s/createSession?key=%s", GMAP_BASE_URL, gmapApiKey)
+	resp, err := http.Post(fullUrl, "application/json", bytes.NewBuffer(tileBodyBytes))
+	if err != nil {
+		return nil, nil, status.Error(codes.Internal, err.Error())
+	}
+
+	defer resp.Body.Close()
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return nil, nil, status.Error(codes.Internal, err.Error())
+	}
+
+	bodyBytes := []byte(body)
+	var jsonResponse map[string]interface{}
+	err = json.Unmarshal(bodyBytes, &jsonResponse)
+	if err != nil {
+		return nil, nil, status.Error(codes.Internal, err.Error())
+	}
+
+	sessionToken := jsonResponse["session"].(string)
+	expiry := jsonResponse["expiry"].(string)
+	return &sessionToken, &expiry, nil
+}
+
+
+func (s Server) UpdateSession(ctx context.Context, sessionId string, sessionToken string, expiry string) error {
+	expiryInt, err := strconv.ParseInt(expiry, 10, 64)
+	if err != nil {
+		return err
+	}
+
+	tm := time.Unix(expiryInt, 0)
+
+	_, err = s.db.ExecContext(ctx,
+		`update map_sessions
+		set session_token = $1,
+		expiration = $2
+		where session_id = $3
+		`,
+		sessionToken,
+		tm,
+		sessionId,
+	)
+	if err != nil {
+		log.Err(err).Send()
+		return err
+	}
+	return nil
 }
 
 
