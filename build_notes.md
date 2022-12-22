@@ -7,9 +7,15 @@ cp app.yaml.example app.yaml
 ```
 
 ### 2. You may change the 'service' name. But mostly you need to enter the fields for the environment variables. Also, use the internal host ip for the Postgres DB so you wouldn't need to whitelist App Engine's IP every deploy.
-
+### You also need to input the correct PROJECT_ID and the DB_INSTANCE_NAME.
+```
+beta_settings:
+  # see https://cloud.google.com/sql/docs/mysql/connect-app-engine-flexible
+   cloud_sql_instances: "${PROJECT_ID}:europe-west1:${DB_INSTANCE_NAME}=tcp:5432"
+```
+---
 ## B. Make sure you have gcloud cli setup. [Here](https://cloud.google.com/sdk/docs/install) are the steps.
-
+---
 ## C. Build the project
 ### 1. Make sure the `.env.development` file points to localhost:8080 and the urls in `src/client/reducers.js` have omitted host and port.
 ```
@@ -95,7 +101,7 @@ Then, uncomment the line below:
 
 The reason for this is that in App Engine VM, the files will be stored a little differently than when we have the local environment. The Application will then fail to read from `src/server/styles/style-template.json`. This will be resolved soon after all the other essential requirements are met.
 
-
+---
 ## D. Begin deployment steps.
 ### 1. (Only for initial deployment) Set the timeout value for gcloud app cloud build to 3600
 ```
