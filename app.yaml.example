@@ -1,0 +1,36 @@
+service: gmp-dekart-test
+runtime: custom
+env: flex
+
+entrypoint: go run src/server/main.go
+manual_scaling:
+   instances: 1 # important as dekart designed to work on single instance
+
+resources:
+   memory_gb: 2.0 # recommended to handle up to 1M points
+
+vm_health_check:
+  enable_health_check: False
+
+env_variables:
+  DEKART_LOG_DEBUG: "1"
+  DEKART_POSTGRES_DB:
+  DEKART_POSTGRES_USER:
+  DEKART_POSTGRES_PASSWORD:
+  DEKART_POSTGRES_PORT:
+  # see https://cloud.google.com/sql/docs/mysql/connect-app-engine-flexible
+  DEKART_POSTGRES_HOST:
+  DEKART_CLOUD_STORAGE_BUCKET:
+  DEKART_BIGQUERY_PROJECT_ID:
+  DEKART_BIGQUERY_MAX_BYTES_BILLED:
+  DEKART_MAPBOX_TOKEN:
+  REACT_APP_GOOGLE_MAPS_TOKEN:
+  DEKART_CORS_ORIGIN: "*"
+
+beta_settings:
+  # see https://cloud.google.com/sql/docs/mysql/connect-app-engine-flexible
+   cloud_sql_instances: "${PROJECT_ID}:europe-west1:${DB_INSTANCE_NAME}=tcp:5432"
+  
+network:
+  name: projects/bigquery-kepler-dekart/global/networks/default
+  subnetwork_name: default
