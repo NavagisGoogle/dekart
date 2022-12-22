@@ -347,7 +347,7 @@ func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
 
 	// During Production or Building in App Engine, uncomment the line below and comment out entire block from line "styleJsonFile"
 	// This is temporary workaround for reading the json file
-	// sonBytes := []byte(`{"version":8,"sources":{"raster-tiles":{"type":"raster","tiles":["https://www.googleapis.com/tile/v1/tiles/{z}/{x}/{y}"],"tileSize":256,"attribution":"Map tiles by <a target=\"_top\" rel=\"noopener\" href=\"https://maps.google.com\">Google</a>"}},"layers":[{"id":"simple-tiles","type":"raster","source":"raster-tiles","minzoom":0,"maxzoom":22}]}`)
+	// jsonBytes := []byte(`{"version":8,"sources":{"raster-tiles":{"type":"raster","tiles":["https://www.googleapis.com/tile/v1/tiles/{z}/{x}/{y}"],"tileSize":256,"attribution":"Map tiles by <a target=\"_top\" rel=\"noopener\" href=\"https://maps.google.com\">Google</a>"}},"layers":[{"id":"simple-tiles","type":"raster","source":"raster-tiles","minzoom":0,"maxzoom":22}]}`)
 
 	var mapStyle MapStyle
 	err = json.Unmarshal(jsonBytes, &mapStyle)
