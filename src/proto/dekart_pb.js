@@ -7254,9 +7254,7 @@ proto.CreateTileSessionResponse.toObject = function(includeInstance, msg) {
   var f, obj = {
     sessionId: jspb.Message.getFieldWithDefault(msg, 1, ""),
     sessionToken: jspb.Message.getFieldWithDefault(msg, 2, ""),
-    expiry: jspb.Message.getFieldWithDefault(msg, 3, ""),
-    tileWidth: jspb.Message.getFieldWithDefault(msg, 4, 0),
-    tileHeight: jspb.Message.getFieldWithDefault(msg, 5, 0)
+    expiry: jspb.Message.getFieldWithDefault(msg, 3, "")
   };
 
   if (includeInstance) {
@@ -7305,14 +7303,6 @@ proto.CreateTileSessionResponse.deserializeBinaryFromReader = function(msg, read
       var value = /** @type {string} */ (reader.readString());
       msg.setExpiry(value);
       break;
-    case 4:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTileWidth(value);
-      break;
-    case 5:
-      var value = /** @type {number} */ (reader.readInt32());
-      msg.setTileHeight(value);
-      break;
     default:
       reader.skipField();
       break;
@@ -7360,20 +7350,6 @@ proto.CreateTileSessionResponse.serializeBinaryToWriter = function(message, writ
   if (f.length > 0) {
     writer.writeString(
       3,
-      f
-    );
-  }
-  f = message.getTileWidth();
-  if (f !== 0) {
-    writer.writeInt32(
-      4,
-      f
-    );
-  }
-  f = message.getTileHeight();
-  if (f !== 0) {
-    writer.writeInt32(
-      5,
       f
     );
   }
@@ -7431,42 +7407,6 @@ proto.CreateTileSessionResponse.prototype.getExpiry = function() {
  */
 proto.CreateTileSessionResponse.prototype.setExpiry = function(value) {
   return jspb.Message.setProto3StringField(this, 3, value);
-};
-
-
-/**
- * optional int32 tile_width = 4;
- * @return {number}
- */
-proto.CreateTileSessionResponse.prototype.getTileWidth = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 4, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.CreateTileSessionResponse} returns this
- */
-proto.CreateTileSessionResponse.prototype.setTileWidth = function(value) {
-  return jspb.Message.setProto3IntField(this, 4, value);
-};
-
-
-/**
- * optional int32 tile_height = 5;
- * @return {number}
- */
-proto.CreateTileSessionResponse.prototype.getTileHeight = function() {
-  return /** @type {number} */ (jspb.Message.getFieldWithDefault(this, 5, 0));
-};
-
-
-/**
- * @param {number} value
- * @return {!proto.CreateTileSessionResponse} returns this
- */
-proto.CreateTileSessionResponse.prototype.setTileHeight = function(value) {
-  return jspb.Message.setProto3IntField(this, 5, value);
 };
 
 

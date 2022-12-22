@@ -969,12 +969,6 @@ export class CreateTileSessionResponse extends jspb.Message {
   getExpiry(): string;
   setExpiry(value: string): void;
 
-  getTileWidth(): number;
-  setTileWidth(value: number): void;
-
-  getTileHeight(): number;
-  setTileHeight(value: number): void;
-
   serializeBinary(): Uint8Array;
   toObject(includeInstance?: boolean): CreateTileSessionResponse.AsObject;
   static toObject(includeInstance: boolean, msg: CreateTileSessionResponse): CreateTileSessionResponse.AsObject;
@@ -990,8 +984,6 @@ export namespace CreateTileSessionResponse {
     sessionId: string,
     sessionToken: string,
     expiry: string,
-    tileWidth: number,
-    tileHeight: number,
   }
 }
 
