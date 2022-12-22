@@ -181,6 +181,55 @@
     display: table-cell;
 }
 
+.keplerBlock :global .tilt-and-rotation-container button {
+    position: absolute;
+    height: 40px;
+    width: 40px;
+    background-color: #29323c;
+    outline: none;
+    border: none;
+    padding: 0px;
+    opacity: 20%;
+    transition: opacity 0.3s, transform 0.3s, top 0.3s, bottom 0.3s, left 0.3s, right 0.3s;
+}
+
+.keplerBlock :global .tilt-and-rotation-container button:hover {
+    opacity: 100%;
+    transform: scale(1.2);
+}
+
+.keplerBlock :global .tilt-and-rotation-container button:not(:hover) {
+    opacity: 20%;
+    transform: scale(1.0);
+}
+
+.keplerBlock :global .tilt-and-rotation-container img {
+    height: inherit;
+    width: inherit;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.keplerBlock :global .tilt-and-rotation-container .tilt-up {
+    bottom: 20px;
+}
+
+.keplerBlock :global .tilt-and-rotation-container .tilt-up img {
+    transform: scaleY(-1);
+}
+
+.keplerBlock :global .tilt-and-rotation-container .tilt-down {
+    top: 20px;
+}
+
+.keplerBlock :global .tilt-and-rotation-container .rotate-right {
+    right: 20px;
+}
+
+.keplerBlock :global .tilt-and-rotation-container .rotate-left img {
+    transform: scaleX(-1);
+}
+
 .readOnly span {
     margin-right: 5px;
 }
