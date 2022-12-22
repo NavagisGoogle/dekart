@@ -192,8 +192,10 @@ function AddGoogleAttribution() {
       <div className="google-attribution-logo">
         <img id="google-logo" src="/google_on_non_white.png" alt="Google Logo" />
       </div>
-      <div className="google-attribution-text">
-        {googleMaps.copyright}
+      <div className="google-attribution-container">
+        <div className="google-attribution-text">
+          <div className="google-attribution-innerText">{googleMaps.copyright}</div>
+        </div>
       </div>
     </div>
   )
