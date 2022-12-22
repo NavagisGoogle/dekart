@@ -6,12 +6,12 @@ import { error} from './message'
 import { get, post } from '../lib/api'
 
 const MAPSTYLES = {
-    'gmp-streets2d': 1,
-    'gmp-hybrid': 2,
-    'gmp-satellite': 2,
-    'gmp-terrain': 3,
-    'gmp-light': 1,
-    'gmp-dark': 1
+    'streets2d': 1,
+    'hybrid': 2,
+    'satellite': 2,
+    'terrain': 3,
+    'light': 1,
+    'dark': 1
 }
 
 export function createTileSessions () {
@@ -34,10 +34,10 @@ export function createTileSessions () {
                     req.setScale('scaleFactor2x')
                     req.setHighDpi(true)
                     req.setOverlay(false)
-                    if (mapstyle === 'gmp-hybrid' || mapstyle === 'gmp-terrain') req.setLayerTypesList([1])
-                    if (mapstyle === 'gmp-light') req = setStyleTheme(req, lightTheme)
-                    if (mapstyle === 'gmp-dark') req = setStyleTheme(req, darkTheme)
-                    if (mapstyle === 'gmp-terrain') req = setStyleTheme(req, terrainStyle)
+                    if (mapstyle === 'hybrid' || mapstyle === 'terrain') req.setLayerTypesList([1])
+                    if (mapstyle === 'light') req = setStyleTheme(req, lightTheme)
+                    if (mapstyle === 'dark') req = setStyleTheme(req, darkTheme)
+                    if (mapstyle === 'terrain') req = setStyleTheme(req, terrainStyle)
                     try {
                         const { sessionId } = await unary(Dekart.CreateTileSession, req)
                         await post(`/update-mapstyle/${mapstyle}/${sessionId}`)

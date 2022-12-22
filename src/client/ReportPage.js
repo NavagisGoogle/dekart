@@ -369,7 +369,7 @@ export default function ReportPage ({ edit }) {
         const viewportBounds = getViewportBounds(zoomLevel, latlng, bounds)
         // console.log(`Center lat lng = ${latitude}, ${longitude}, Zoom = ${zoomLevel}, bounds = ${height}, ${width}`)
         // console.log(viewportBounds)
-        dispatch(getAttribution(zoomLevel, viewportBounds, `gmp-${styleType}`))
+        dispatch(getAttribution(zoomLevel, viewportBounds, styleType))
       }
     }
   }, [kepler, dispatch])
