@@ -1,5 +1,5 @@
 import { CreateTileSessionRequest, GetSessionTokenRequest, Style, GetAttributionRequest } from '../../proto/dekart_pb'
-import { lightTheme, darkTheme } from '../utils/themed-styles' 
+import { lightTheme, darkTheme, terrainStyle } from '../utils/themed-styles' 
 import { Dekart } from '../../proto/dekart_pb_service'
 import { unary } from '../lib/grpc'
 import { error} from './message'
@@ -37,6 +37,7 @@ export function createTileSessions () {
                     if (mapstyle === 'gmp-hybrid' || mapstyle === 'gmp-terrain') req.setLayerTypesList([1])
                     if (mapstyle === 'gmp-light') req = setStyleTheme(req, lightTheme)
                     if (mapstyle === 'gmp-dark') req = setStyleTheme(req, darkTheme)
+                    if (mapstyle === 'gmp-terrain') req = setStyleTheme(req, terrainStyle)
                     try {
                         const { sessionId } = await unary(Dekart.CreateTileSession, req)
                         await post(`/update-mapstyle/${mapstyle}/${sessionId}`)
