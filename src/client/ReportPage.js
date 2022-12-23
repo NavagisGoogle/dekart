@@ -194,7 +194,7 @@ function AddGoogleAttribution() {
   useEffect(() => {
     if (kepler) {
       const { mapStyle : { styleType }} = kepler
-      styleType === 'dark' || styleType === 'light' ? toggleUseColoredLogo(true) : toggleUseColoredLogo(false)
+      styleType === 'streets2d' || styleType === 'light' || styleType === 'terrain' ? toggleUseColoredLogo(true) : toggleUseColoredLogo(false)
     }
   }, [kepler])
   const imgFile = useColoredLogo ? 'google_on_white.png' : 'google_on_non_white.png'
