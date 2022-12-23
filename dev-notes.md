@@ -1,3 +1,9 @@
+# BigQuery Viewer
+This is a Fork of Dekpert.xyz that adds support for Google maps basemaps. All Dekart functionality remains. It is pinned to version XYZ of Dekart.
+
+Chnages can be viewed <a href="https://github.com/dekart-xyz/dekart/compare/main...NavagisGoogle:dekart:main">here</a>
+Developer notes and build notes specifically for this fork are located in the root directory under dev_notes.md and build_notes.md
+
 # Dekart
 Dekart is an open-source data visualization and analytical tool for large scale geo-spatial data. Dekart is based on Kepler.gl visualization and supports BigQuery and AWS Athena as a data source.
 <a href="https://dekart.xyz/docs/about/screencast/?ref=github"><img src="./docs/files/screen.png"></a>
