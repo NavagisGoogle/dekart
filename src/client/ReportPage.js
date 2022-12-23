@@ -210,66 +210,6 @@ function AddGoogleAttribution() {
   )
 }
 
-function TiltRotationButtions() {
-  const kepler = useSelector(state => state.keplerGl.kepler)
-  const [viewportSize, setViewportSize] = useState({height: 0, width: 0})
-  const [isPanelActive, togglePanelActive] = useState(false)
-  const panelWidth = 180;
-  const tiltIncrement = 5;
-  const tiltLimit = 30;
-  const rotationIncrement = 10;
-  const rotationLimit = 360;
-  useEffect(() => {
-    if (kepler) {
-      const { mapState: { height, width }, uiState: { activeSidePanel }} = kepler
-      const newViewportSize = {height: height, width: width }
-      if (!isEqual(viewportSize, newViewportSize)) {
-        setViewportSize(newViewportSize)
-      }
-      activeSidePanel ? togglePanelActive(true) : togglePanelActive(false)
-    }
-  }, [kepler])
-  const dispatch = useDispatch()
-  const rightPosition = (viewportSize.width / 2) - (isPanelActive ? panelWidth : 0)
-  const topPosition = (viewportSize.height / 2)
-  const rotateLeftPosition = isPanelActive ? (panelWidth * 2) - 20 : 20
-
-  function handleTilt(sign) {
-    if (kepler) {
-      const { mapState: { pitch }} = kepler
-      let newTilt = pitch + (sign * tiltIncrement)
-      newTilt = newTilt > tiltLimit ? tiltLimit : (newTilt < 0 ? 0 : newTilt)
-      dispatch(updateMap({pitch: newTilt}))
-    }
-  }
-
-  function handleRotate(sign) {
-    if (kepler) {
-      const { mapState: { bearing }} = kepler
-      let newRotation = bearing + (sign * rotationIncrement)
-      newRotation = newRotation > rotationLimit ? rotationLimit : (newRotation < (-1 * rotationLimit) ? 0 : newRotation)
-      dispatch(updateMap({ bearing: newRotation }))
-    }
-  }
-
-  return (
-    <div className="tilt-and-rotation-container">
-      <button onClick={() => handleTilt(-1)} className="tilt-up" style={{ right: rightPosition }}>
-        <img src="/tilt-down.png" alt="tilt-icon"/>
-      </button>
-      <button onClick={() => handleTilt(1)} className="tilt-down" style={{ right: rightPosition }}>
-        <img src="/tilt-down.png" alt="tilt-icon"/>
-      </button>
-      <button onClick={() => handleRotate(1)} className="rotate-left" style={{ top: topPosition, left: rotateLeftPosition }}>
-        <img src="/rotate-right.png" alt="rotate-icon"/>
-      </button>
-      <button onClick={() => handleRotate(-1)} className="rotate-right" style={{ top: topPosition }}>
-        <img src="/rotate-right.png" alt="rotate-icon"/>
-      </button>
-    </div>
-  )
-}
-
 class CatchKeplerError extends Component {
   constructor (props) {
     super(props)
@@ -317,7 +257,6 @@ function Kepler () {
                 height={height}
               />
               <AddGoogleAttribution />
-              <TiltRotationButtions />
             </CatchKeplerError>
           )}
         </AutoSizer>
