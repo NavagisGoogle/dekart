@@ -74,6 +74,11 @@ const customKeplerGlReducer = keplerGlReducer.initialState({
 npm run build
 ```
 
+Note: If you encounter a heap-memory related error, you may need to adjust the memory allocation for npm
+```
+export NODE_OPTIONS="--max-old-space-size=8192"
+```
+
 ### 3. (This is a temporary workaround) Edit `src/server/dekart/googlemaps.go` around the function `ServeMapStyle`
 Comment out this whole code block:
 ```
