@@ -135,9 +135,6 @@
 .keplerBlock :global #kepler-gl__kepler .side-panel__header__top {
     display: none;
 }
-.keplerBlock :global #kepler-gl__kepler .color-select__input-group {
-    display: none;
-}
 
 .keplerBlock :global #kepler-gl__kepler .add-data-button {
     display: none;
