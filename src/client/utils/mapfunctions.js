@@ -11,8 +11,6 @@ export function getViewportBounds(zoomLevel, centerLatLng, boundsHW) {
     }
 
     const boundingPixels = getBoundingPixels(pixelCoordinates, boundsHW, scale)
-    // console.log(`PIXEL COORDINATES ${pixelCoordinates.x}, ${pixelCoordinates.y}`)
-    // console.log(boundingPixels)
 
     const viewportCoordinates = {
         east: reverseMercatorLng(boundingPixels.maxX, scale),
@@ -39,7 +37,6 @@ function getScale(zoomLevel) {
 
 function getBoundingPixels(pixelCoordinates, boundsHW, scale) {
     const maxPixel = TILE_SIZE * scale
-    // console.log(`Max Pixel = ${maxPixel}`)
     return {
         minX: boundPixelMin(pixelCoordinates.x, boundsHW.w),
         maxX: boundPixelMax(pixelCoordinates.x, boundsHW.w, maxPixel),
