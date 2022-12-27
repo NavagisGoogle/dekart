@@ -136,6 +136,10 @@
     display: none;
 }
 
+.keplerBlock :global #kepler-gl__kepler .map-style-panel .color-select__input-group {
+    display: none;
+}
+
 .keplerBlock :global #kepler-gl__kepler .add-data-button {
     display: none;
 }
