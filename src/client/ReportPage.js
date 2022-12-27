@@ -3,7 +3,6 @@ import Input from 'antd/es/input'
 import Modal from 'antd/es/modal'
 import { useEffect, useState, Component } from 'react'
 import { KeplerGl } from '@dekart-xyz/kepler.gl/dist/components'
-import { updateMap } from '@dekart-xyz/kepler.gl/actions'
 import styles from './ReportPage.module.css'
 import { AutoSizer } from 'react-virtualized'
 import isEqual from 'lodash.isequal'
@@ -306,12 +305,10 @@ export default function ReportPage ({ edit }) {
         const latlng = {lat: latitude, lng: longitude}
         const bounds = {h: height, w: width}
         const viewportBounds = getViewportBounds(zoomLevel, latlng, bounds)
-        // console.log(`Center lat lng = ${latitude}, ${longitude}, Zoom = ${zoomLevel}, bounds = ${height}, ${width}`)
-        // console.log(viewportBounds)
         dispatch(getAttribution(zoomLevel, viewportBounds, styleType))
       }
     }
-  }, [kepler, dispatch])
+  }, [kepler, dispatch, viewportState])
   useEffect(() => checkMapConfig(kepler, mapConfig, setMapChanged), [kepler, mapConfig, setMapChanged])
   const titleChanged = reportStatus.title && title && reportStatus.title !== title
 

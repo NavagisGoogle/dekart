@@ -22,9 +22,7 @@ export function createTileSessions () {
         Object.keys(MAPSTYLES).forEach( async mapstyle => {
             try {
                 const res = await get(`/check-expiry/${mapstyle}`)
-                console.log(`RESPONSE CHECK EXPIRY FOR ${mapstyle}`)
                 const { hasNoSessionToken, expired } = await res.json()
-                console.log(`DB has no saved SessionToken? ${hasNoSessionToken} and is token expired? ${expired}`)
                 if (hasNoSessionToken || expired ) {
                     var req = new CreateTileSessionRequest()
                     req.setMapType(MAPSTYLES[mapstyle])
@@ -84,14 +82,11 @@ function setStyleTheme(req, theme) {
 
 export function getSessionToken () {
     return async (dispatch, getState) => {
-        console.log('Calling Get Session Token')
         const { googleMaps: { sessionId }} = getState()
         const req = new GetSessionTokenRequest()
         req.setSessionid(sessionId)
         try {
-            const { sessionToken } = await unary(Dekart.GetSessionToken, req)
-            console.log('Get Session Token Call was successful')
-            console.log(sessionToken)
+            await unary(Dekart.GetSessionToken, req)
         } catch (err) {
             dispatch(error(err))
             console.log(err)

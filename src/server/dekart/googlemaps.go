@@ -26,8 +26,6 @@ const GMAP_BASE_URL = "https://www.googleapis.com/tile/v1"
 
 // Create Session Token from Google Maps Tile API
 func (s Server) CreateTileSession(ctx context.Context, req *proto.CreateTileSessionRequest) (*proto.CreateTileSessionResponse, error) {
-	log.Info().Msg("Create Tile Session was called!")
-
 	requestBodyJson, err := protojson.Marshal(req)
 	if err != nil {
 		fmt.Printf("Could not marshal message")
@@ -127,8 +125,6 @@ func (s Server) UpdateSession(ctx context.Context, sessionId string, sessionToke
 
 // Using the viewport endpoint in Google Tile API to determine viewport attributions
 func (s Server) GetAttribution(ctx context.Context, req *proto.GetAttributionRequest) (*proto.GetAttributionResponse, error) {
-	log.Info().Msg("Get Attribution was called")
-
 	gmapApiKey := os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN")
 	sessionToken, err := s.GetSessionTokenDB(ctx, req.MapStyle)
 	if err != nil {
@@ -187,8 +183,6 @@ func (s Server) ServeCheckTokenExpiration(w http.ResponseWriter, r *http.Request
 	}
 
 	jsonResponse, err := s.CheckTokenExpirationDB(ctx, vars["mapstyle"])
-
-	log.Info().Msgf("Success Check Style Expiration for %s: %s", vars["mapstyle"], *jsonResponse)
 
 	var tokenExpiration TokenExpiration
 	err = json.Unmarshal([]byte(*jsonResponse), &tokenExpiration)
@@ -319,7 +313,6 @@ func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
 	if claims == nil {
 		http.Error(w, "Unauthorized", http.StatusUnauthorized)
 	}
-	log.Info().Msgf("Success Get Map Style for %s", vars["mapstyle"])
 
 	gmapApiKey := os.Getenv("REACT_APP_GOOGLE_MAPS_TOKEN")
 	sessionToken, err := s.GetSessionTokenDB(ctx, vars["mapstyle"])
@@ -361,8 +354,6 @@ func (s Server) ServeMapStyle(w http.ResponseWriter, r *http.Request) {
 	newTileSource := tileSource + fmt.Sprintf("?key=%s&session=%s", gmapApiKey, *sessionToken)
 
 	mapStyle.Sources.RasterTiles.Tiles[0] = newTileSource
-
-	log.Info().Msgf("Tile API %s", mapStyle.Sources.RasterTiles.Tiles[0])
 
 	mapStyleBytes, err := mapStyle.ToJsonBytes()
 	if err != nil {
