@@ -32,5 +32,5 @@ beta_settings:
    cloud_sql_instances: "${PROJECT_ID}:europe-west1:${DB_INSTANCE_NAME}=tcp:5432"
   
 network:
-  name: projects/bigquery-kepler-dekart/global/networks/default
+  name: projects/${PROJECT_ID}/global/networks/default
   subnetwork_name: default
