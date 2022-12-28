@@ -1,7 +1,7 @@
 # BigQuery Viewer
-This is a Fork of Dekpert.xyz that adds support for Google maps basemaps. All Dekart functionality remains. It is pinned to version XYZ of Dekart.
+This is a Fork of Dekart.xyz that adds support for Google maps basemaps. All Dekart functionality remains. It is pinned to version 0.11.0-rc.6 of Dekart.
 
-Chnages can be viewed <a href="https://github.com/dekart-xyz/dekart/compare/main...NavagisGoogle:dekart:main">here</a>
+Changes can be viewed <a href="https://github.com/dekart-xyz/dekart/compare/main...NavagisGoogle:dekart:main">here</a>
 Developer notes and build notes specifically for this fork are located in the root directory under dev_notes.md and build_notes.md
 
 # Dekart
