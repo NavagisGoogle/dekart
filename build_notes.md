@@ -115,6 +115,6 @@ gcloud config set app/cloud_build_timeout 3600
 
 ### 2. Deploy to app engine
 ```
-gcloud app deploy --project bigquery-kepler-dekart --version {version_name} --no-promote
+gcloud app deploy --project {project_id} --version {version_name} --no-promote
 ```
-Replace {version_name} with the appropriate version name. 
+Replace {project_id} with the appropriate project id and {version_name} with the appropriate version name. 
