@@ -2,7 +2,7 @@
 This is a Fork of Dekart.xyz that adds support for Google maps basemaps. All Dekart functionality remains. It is pinned to version 0.11.0-rc.6 of Dekart.
 
 Changes can be viewed <a href="https://github.com/dekart-xyz/dekart/compare/main...NavagisGoogle:dekart:main">here</a>
-Developer notes and build notes specifically for this fork are located in the root directory under dev_notes.md and build_notes.md
+Developer notes and build notes specifically for this fork are located in the root directory under <a href="https://github.com/NavagisGoogle/dekart/blob/main/dev_notes.md">dev_notes.md</a> and <a href="https://github.com/NavagisGoogle/dekart/blob/main/build_notes.md">build_notes.md</a>
 
 # Dekart
 Dekart is an open-source data visualization and analytical tool for large scale geo-spatial data. Dekart is based on Kepler.gl visualization and supports BigQuery and AWS Athena as a data source.
